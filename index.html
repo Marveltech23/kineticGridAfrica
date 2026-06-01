@@ -1,0 +1,3481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KineticGrid Africa — Powering Africa's Electric Future</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0f0d;
+    --forest: #0d2818;
+    --deep: #112a1c;
+    --mid: #1a3d28;
+    --charge: #3dff7e;
+    --charge-dim: #2bcf63;
+    --sage: #8ab89a;
+    --white: #f4f8f5;
+    --off: #d6e8dc;
+    --muted: #7a9987;
+    --border: rgba(61,255,126,0.12);
+    --border-dim: rgba(255,255,255,0.07);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 10px; height: 10px;
+    background: var(--charge);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease, background 0.3s ease;
+    mix-blend-mode: exclusion;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 40px; height: 40px;
+    border: 1px solid rgba(61,255,126,0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.12s ease, width 0.3s ease, height 0.3s ease;
+  }
+  body:hover .cursor-ring { opacity: 1; }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9997;
+    opacity: 0.4;
+  }
+
+  /* Navigation */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 24px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.4s ease, padding 0.4s ease;
+  }
+  nav.scrolled {
+    background: rgba(10,15,13,0.92);
+    backdrop-filter: blur(20px);
+    padding: 16px 60px;
+    border-bottom: 1px solid var(--border-dim);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+  .logo-mark {
+    width: 36px; height: 36px;
+    position: relative;
+  }
+  .logo-mark svg { width: 100%; height: 100%; }
+  .logo-text {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    line-height: 1.1;
+  }
+  .logo-text span {
+    display: block;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 0; height: 1px;
+    background: var(--charge);
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-cta {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--charge);
+    padding: 10px 24px;
+    border: none;
+    cursor: none;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .nav-cta:hover { background: var(--charge-dim); transform: translateY(-1px); }
+
+  /* Pages */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ===== HOME ===== */
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 60px 80px;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 60% 40%, rgba(13,40,24,0.8) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 80% at 20% 60%, rgba(61,255,126,0.05) 0%, transparent 60%),
+      linear-gradient(160deg, #0a1a10 0%, #060e08 40%, #0a0f0d 100%);
+  }
+
+  /* Animated grid lines */
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(61,255,126,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(61,255,126,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    animation: gridShift 20s linear infinite;
+  }
+  @keyframes gridShift {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(80px, 80px); }
+  }
+
+  /* Animated energy pulses */
+  .pulse-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(61,255,126,0.12);
+    animation: pulseExpand 4s ease-out infinite;
+  }
+  .pulse-ring:nth-child(1) { width: 300px; height: 300px; top: 20%; right: 15%; animation-delay: 0s; }
+  .pulse-ring:nth-child(2) { width: 500px; height: 500px; top: 10%; right: 8%; animation-delay: 1.3s; }
+  .pulse-ring:nth-child(3) { width: 700px; height: 700px; top: 0%; right: 0%; animation-delay: 2.6s; }
+  @keyframes pulseExpand {
+    0% { opacity: 0.5; transform: scale(0.95); }
+    100% { opacity: 0; transform: scale(1.05); }
+  }
+
+  /* Abstract EV charging visualization */
+  .hero-visual {
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 520px;
+    height: 520px;
+    opacity: 0.7;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 820px;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .hero-eyebrow-line {
+    width: 40px;
+    height: 1px;
+    background: var(--charge);
+  }
+  .hero-eyebrow-text {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--charge);
+  }
+
+  .hero-headline {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(52px, 7vw, 96px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    margin-bottom: 28px;
+  }
+  .hero-headline em {
+    font-style: normal;
+    color: var(--charge);
+    display: block;
+  }
+
+  .hero-sub {
+    font-size: clamp(16px, 1.8vw, 20px);
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--sage);
+    max-width: 540px;
+    margin-bottom: 48px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .btn-primary {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--charge);
+    padding: 16px 36px;
+    border: none;
+    cursor: none;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s, transform 0.2s, gap 0.2s;
+  }
+  .btn-primary:hover { background: var(--charge-dim); transform: translateY(-2px); gap: 16px; }
+  .btn-primary svg { transition: transform 0.2s; }
+
+  .btn-secondary {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: transparent;
+    padding: 16px 36px;
+    border: 1px solid rgba(255,255,255,0.15);
+    cursor: none;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--charge); background: rgba(61,255,126,0.05); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 80px;
+    right: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    z-index: 2;
+  }
+  .hero-scroll-text {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    writing-mode: vertical-rl;
+  }
+  .hero-scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--charge), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+
+  /* Stats strip */
+  .stats-strip {
+    background: var(--forest);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 60px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .stat-item {
+    padding: 0 40px;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .stat-item:first-child { padding-left: 0; }
+  .stat-item:last-child { border-right: none; }
+  .stat-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--charge);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* Section base */
+  section { position: relative; }
+
+  .section-inner {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 60px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 64px;
+  }
+  .section-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .section-eyebrow-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--charge);
+  }
+  .section-eyebrow-text {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--charge);
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    max-width: 600px;
+  }
+  .section-link {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s, gap 0.2s;
+    white-space: nowrap;
+  }
+  .section-link:hover { color: var(--charge); gap: 14px; }
+
+  /* About snapshot */
+  .about-snap {
+    padding: 100px 0;
+    background: var(--ink);
+  }
+  .about-snap-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .about-snap-left {}
+  .about-snap-body {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--sage);
+    margin-bottom: 32px;
+  }
+  .about-snap-body strong {
+    color: var(--white);
+    font-weight: 500;
+  }
+  .about-snap-right {
+    position: relative;
+  }
+  .about-visual-box {
+    background: var(--forest);
+    border: 1px solid var(--border);
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-visual-box::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(61,255,126,0.08) 0%, transparent 70%);
+  }
+  .about-pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .pillar {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-dim);
+  }
+  .pillar:last-child { border-bottom: none; padding-bottom: 0; }
+  .pillar-icon {
+    width: 36px; height: 36px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .pillar-icon svg { width: 16px; height: 16px; color: var(--charge); }
+  .pillar-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .pillar-text {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* Solutions grid */
+  .solutions {
+    padding: 100px 0;
+    background: var(--forest);
+  }
+  .solutions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border-dim);
+    border: 1px solid var(--border-dim);
+  }
+  .solution-card {
+    background: var(--deep);
+    padding: 44px 40px;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    transition: background 0.3s;
+    text-decoration: none;
+    display: block;
+  }
+  .solution-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 2px; width: 0;
+    background: var(--charge);
+    transition: width 0.4s ease;
+  }
+  .solution-card:hover { background: var(--mid); }
+  .solution-card:hover::after { width: 100%; }
+  .sol-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: var(--border);
+    margin-bottom: 28px;
+    color: rgba(61,255,126,0.25);
+  }
+  .sol-icon {
+    width: 48px; height: 48px;
+    margin-bottom: 24px;
+  }
+  .sol-icon svg { width: 100%; height: 100%; }
+  .sol-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .sol-desc {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .sol-arrow {
+    position: absolute;
+    top: 44px; right: 40px;
+    opacity: 0;
+    transform: translate(-8px, 8px);
+    transition: opacity 0.3s, transform 0.3s;
+    color: var(--charge);
+  }
+  .solution-card:hover .sol-arrow { opacity: 1; transform: translate(0, 0); }
+
+  /* Why Africa */
+  .why-africa {
+    padding: 120px 0;
+    background: var(--ink);
+    overflow: hidden;
+  }
+  .why-africa-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 100px;
+    align-items: start;
+  }
+  .why-sticky { position: sticky; top: 120px; }
+  .why-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+  .why-title span { color: var(--charge); }
+  .why-intro {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--sage);
+    margin-bottom: 36px;
+  }
+  .why-cards { display: flex; flex-direction: column; gap: 0; }
+  .why-card {
+    padding: 36px 0;
+    border-bottom: 1px solid var(--border-dim);
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 24px;
+    align-items: start;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .why-card.visible { opacity: 1; transform: translateY(0); }
+  .why-card-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 48px;
+    font-weight: 800;
+    color: rgba(61,255,126,0.12);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+  .why-card-content {}
+  .why-card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+  .why-card-text {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+
+  /* Projects */
+  .projects {
+    padding: 100px 0;
+    background: var(--forest);
+  }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 2px;
+    background: var(--border-dim);
+  }
+  .project-card {
+    background: var(--deep);
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    transition: background 0.3s;
+  }
+  .project-card:hover { background: var(--mid); }
+  .project-card.featured { grid-row: span 2; }
+  .project-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--charge);
+    border: 1px solid rgba(61,255,126,0.25);
+    padding: 5px 12px;
+    margin-bottom: 28px;
+  }
+  .project-tag-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--charge); animation: blink 2s infinite; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .project-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .project-card.featured .project-title { font-size: 32px; }
+  .project-desc {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+  .project-metrics {
+    display: flex;
+    gap: 32px;
+  }
+  .project-metric {}
+  .project-metric-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--charge);
+    letter-spacing: -0.03em;
+  }
+  .project-metric-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  .project-visual {
+    position: absolute;
+    bottom: -20px; right: -20px;
+    opacity: 0.05;
+  }
+
+  /* Partnerships */
+  .partnerships {
+    padding: 100px 0;
+    background: var(--ink);
+  }
+  .partner-types {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+    background: var(--border-dim);
+    margin-top: 48px;
+  }
+  .partner-type {
+    background: var(--deep);
+    padding: 32px 24px;
+    text-align: center;
+    cursor: none;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .partner-type:hover { background: var(--mid); transform: translateY(-4px); }
+  .partner-type-icon {
+    width: 48px; height: 48px;
+    margin: 0 auto 16px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .partner-type-icon svg { width: 22px; height: 22px; color: var(--charge); }
+  .partner-type-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .partner-type-text {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* CTA Section */
+  .cta-section {
+    padding: 120px 60px;
+    background: var(--forest);
+    border-top: 1px solid var(--border);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(61,255,126,0.06) 0%, transparent 70%);
+  }
+  .cta-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-title span { color: var(--charge); }
+  .cta-sub {
+    font-size: 18px;
+    color: var(--sage);
+    margin-bottom: 48px;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== ABOUT PAGE ===== */
+  .about-hero {
+    min-height: 60vh;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 60px 80px;
+    background: linear-gradient(160deg, var(--forest) 0%, var(--ink) 60%);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .about-hero-bg-text {
+    position: absolute;
+    bottom: -20px; right: -20px;
+    font-family: 'Syne', sans-serif;
+    font-size: 200px;
+    font-weight: 800;
+    color: rgba(61,255,126,0.025);
+    letter-spacing: -0.05em;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .page-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .page-label-line {
+    width: 40px; height: 1px;
+    background: var(--charge);
+  }
+  .page-label-text {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--charge);
+  }
+  .page-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(48px, 7vw, 88px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    color: var(--white);
+  }
+
+  .story-section {
+    padding: 100px 0;
+    background: var(--ink);
+  }
+  .story-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .story-nav {
+    position: sticky;
+    top: 100px;
+  }
+  .story-nav-item {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border-dim);
+    cursor: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .story-nav-item-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--border-dim);
+    transition: background 0.2s;
+  }
+  .story-nav-item.active .story-nav-item-dot { background: var(--charge); }
+  .story-nav-item-text {
+    font-size: 13px;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+  .story-nav-item.active .story-nav-item-text,
+  .story-nav-item:hover .story-nav-item-text { color: var(--white); }
+
+  .story-content {}
+  .story-block {
+    padding-bottom: 60px;
+    margin-bottom: 60px;
+    border-bottom: 1px solid var(--border-dim);
+  }
+  .story-block:last-child { border-bottom: none; }
+  .story-block-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--charge);
+    margin-bottom: 20px;
+  }
+  .story-block-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+  .story-block-text {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--sage);
+  }
+  .story-block-text p { margin-bottom: 16px; }
+  .story-block-text p:last-child { margin-bottom: 0; }
+  .story-block-text strong { color: var(--white); font-weight: 500; }
+
+  .values-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--border-dim);
+    margin-top: 40px;
+  }
+  .value-item {
+    background: var(--forest);
+    padding: 32px;
+  }
+  .value-item-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .value-item-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* Roadmap */
+  .roadmap { padding: 100px 0; background: var(--forest); }
+  .timeline {
+    position: relative;
+    padding-left: 60px;
+    margin-top: 60px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--charge), var(--border-dim));
+  }
+  .timeline-item {
+    position: relative;
+    padding-bottom: 56px;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .timeline-item.visible { opacity: 1; transform: translateX(0); }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-dot {
+    position: absolute;
+    left: -68px;
+    top: 6px;
+    width: 16px; height: 16px;
+    border: 2px solid var(--charge);
+    border-radius: 50%;
+    background: var(--ink);
+  }
+  .timeline-dot::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: var(--charge);
+  }
+  .timeline-year {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--charge);
+    margin-bottom: 8px;
+  }
+  .timeline-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .timeline-text {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--muted);
+    max-width: 600px;
+  }
+
+  /* ===== SOLUTIONS PAGE ===== */
+  .solutions-detail { padding: 100px 0; background: var(--ink); }
+  .solution-detail-item {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 80px;
+    align-items: start;
+    padding: 80px 0;
+    border-bottom: 1px solid var(--border-dim);
+  }
+  .solution-detail-item:first-child { padding-top: 0; }
+  .solution-detail-item:last-child { border-bottom: none; }
+  .solution-detail-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 72px;
+    font-weight: 800;
+    color: rgba(61,255,126,0.08);
+    letter-spacing: -0.05em;
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+  .solution-detail-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .solution-detail-overview {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--sage);
+    margin-bottom: 28px;
+  }
+  .solution-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .solution-tag {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--charge);
+    border: 1px solid rgba(61,255,126,0.2);
+    padding: 5px 12px;
+  }
+  .solution-detail-right {}
+  .detail-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--border-dim);
+  }
+  .detail-tab {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 12px 20px;
+    cursor: none;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    margin-bottom: -1px;
+  }
+  .detail-tab.active { color: var(--white); border-bottom-color: var(--charge); }
+  .detail-panel { display: none; }
+  .detail-panel.active { display: block; }
+  .detail-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .detail-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--sage);
+  }
+  .detail-list li::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--charge);
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+
+  /* ===== PROJECTS PAGE ===== */
+  .projects-page { padding: 100px 0; background: var(--ink); }
+  .project-full {
+    margin-bottom: 80px;
+    border: 1px solid var(--border-dim);
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .project-full:hover { border-color: var(--border); }
+  .project-full-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: start;
+    padding: 48px;
+    background: var(--forest);
+  }
+  .project-full-meta {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .project-full-meta-item {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .project-full-meta-item span {
+    color: var(--charge);
+  }
+  .project-full-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .project-full-subtitle {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--sage);
+    max-width: 560px;
+  }
+  .project-full-status {
+    text-align: right;
+  }
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border: 1px solid;
+  }
+  .status-badge.development { color: #ffd37a; border-color: rgba(255,211,122,0.3); }
+  .status-badge.planning { color: var(--charge); border-color: rgba(61,255,126,0.3); }
+  .status-badge.active { color: #7adeff; border-color: rgba(122,222,255,0.3); }
+  .status-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; animation: blink 2s infinite; }
+
+  .project-full-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-top: 1px solid var(--border-dim);
+  }
+  .project-full-section {
+    padding: 36px 40px;
+    border-right: 1px solid var(--border-dim);
+  }
+  .project-full-section:last-child { border-right: none; }
+  .project-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--charge);
+    margin-bottom: 16px;
+  }
+  .project-kpis {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .project-kpi-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-dim);
+  }
+  .project-kpi-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .project-kpi-label { font-size: 12px; color: var(--muted); }
+  .project-kpi-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .project-timeline-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .project-phase {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .phase-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--border-dim);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .phase-bar-fill {
+    height: 100%;
+    background: var(--charge);
+    border-radius: 2px;
+    transition: width 1s ease;
+  }
+  .phase-label { font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+  /* ===== SUSTAINABILITY PAGE ===== */
+  .sustain-page { padding: 100px 0; background: var(--ink); }
+  .sustain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border-dim);
+    margin-bottom: 80px;
+  }
+  .sustain-card {
+    background: var(--deep);
+    padding: 44px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .sustain-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+  }
+  .sustain-card.green::after { background: var(--charge); }
+  .sustain-card.blue::after { background: #7adeff; }
+  .sustain-card.amber::after { background: #ffd37a; }
+  .sustain-icon-wrap {
+    width: 56px; height: 56px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .sustain-icon-wrap svg { width: 24px; height: 24px; color: var(--charge); }
+  .sustain-card.blue .sustain-icon-wrap svg { color: #7adeff; }
+  .sustain-card.amber .sustain-icon-wrap svg { color: #ffd37a; }
+  .sustain-card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .sustain-card-text {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+  .sustain-impact {
+    background: var(--forest);
+    padding: 60px;
+    border: 1px solid var(--border);
+  }
+  .sustain-impact-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 40px;
+  }
+  .impact-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+  }
+  .impact-metric {}
+  .impact-metric-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--charge);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .impact-metric-desc {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  /* ===== PARTNERSHIPS PAGE ===== */
+  .partnerships-page { padding: 100px 0; background: var(--ink); }
+  .partner-model-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    background: var(--border-dim);
+    margin-bottom: 80px;
+  }
+  .partner-model {
+    background: var(--deep);
+    padding: 52px 48px;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    transition: background 0.3s;
+  }
+  .partner-model:hover { background: var(--mid); }
+  .partner-model-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .partner-model-icon {
+    width: 52px; height: 52px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .partner-model-icon svg { width: 24px; height: 24px; color: var(--charge); }
+  .partner-model-type {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--charge);
+    border: 1px solid rgba(61,255,126,0.2);
+    padding: 4px 10px;
+  }
+  .partner-model-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .partner-model-desc {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+  .partner-model-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .partner-benefit {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: var(--sage);
+  }
+  .partner-benefit::before {
+    content: '';
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--charge);
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+
+  /* ===== NEWS PAGE ===== */
+  .news-page { padding: 100px 0; background: var(--ink); }
+  .news-cats {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+  .news-cat {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--border-dim);
+    padding: 8px 18px;
+    cursor: none;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+  }
+  .news-cat.active,
+  .news-cat:hover {
+    color: var(--charge);
+    border-color: rgba(61,255,126,0.3);
+    background: rgba(61,255,126,0.04);
+  }
+  .news-featured {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 2px;
+    background: var(--border-dim);
+    margin-bottom: 2px;
+  }
+  .news-article {
+    background: var(--deep);
+    padding: 48px;
+    cursor: none;
+    transition: background 0.3s;
+    text-decoration: none;
+    display: block;
+  }
+  .news-article:hover { background: var(--mid); }
+  .news-meta {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    align-items: center;
+  }
+  .news-cat-tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--charge);
+    border: 1px solid rgba(61,255,126,0.25);
+    padding: 3px 10px;
+  }
+  .news-date {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .news-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 12px;
+    line-height: 1.25;
+  }
+  .news-article.main .news-title { font-size: 32px; }
+  .news-excerpt {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border-dim);
+  }
+  .news-grid-article {
+    background: var(--deep);
+    padding: 36px;
+    cursor: none;
+    transition: background 0.3s;
+  }
+  .news-grid-article:hover { background: var(--mid); }
+
+  /* ===== CONTACT PAGE ===== */
+  .contact-page { padding: 100px 0; background: var(--ink); }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .contact-info {}
+  .contact-info-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    margin-bottom: 20px;
+    line-height: 1.15;
+  }
+  .contact-info-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--sage);
+    margin-bottom: 40px;
+  }
+  .contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  .contact-detail {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .contact-detail-icon {
+    width: 40px; height: 40px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .contact-detail-icon svg { width: 16px; height: 16px; color: var(--charge); }
+  .contact-detail-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .contact-detail-val {
+    font-size: 14px;
+    color: var(--white);
+  }
+  .contact-map-placeholder {
+    background: var(--forest);
+    border: 1px solid var(--border);
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-map-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(61,255,126,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(61,255,126,0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+  .map-pin {
+    position: absolute;
+    width: 12px; height: 12px;
+    background: var(--charge);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 4px rgba(61,255,126,0.2), 0 0 0 8px rgba(61,255,126,0.1);
+  }
+  .map-label {
+    position: absolute;
+    bottom: 16px; right: 16px;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .contact-form {}
+  .form-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 32px;
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .form-group {
+    margin-bottom: 16px;
+  }
+  .form-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .form-input,
+  .form-select,
+  .form-textarea {
+    width: 100%;
+    background: var(--forest);
+    border: 1px solid var(--border-dim);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 14px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    cursor: none;
+    appearance: none;
+  }
+  .form-input:focus,
+  .form-select:focus,
+  .form-textarea:focus { border-color: rgba(61,255,126,0.4); }
+  .form-textarea { resize: vertical; min-height: 120px; }
+  .form-select option { background: var(--deep); }
+  .form-submit {
+    width: 100%;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--charge);
+    padding: 18px;
+    border: none;
+    cursor: none;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 24px;
+  }
+  .form-submit:hover { background: var(--charge-dim); }
+
+  /* Footer */
+  footer {
+    background: var(--forest);
+    border-top: 1px solid var(--border);
+    padding: 80px 60px 40px;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 60px;
+    padding-bottom: 60px;
+    border-bottom: 1px solid var(--border-dim);
+    margin-bottom: 40px;
+  }
+  .footer-brand {}
+  .footer-brand-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--muted);
+    margin-top: 16px;
+    margin-bottom: 24px;
+  }
+  .footer-socials {
+    display: flex;
+    gap: 10px;
+  }
+  .footer-social {
+    width: 36px; height: 36px;
+    border: 1px solid var(--border-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: none;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
+    color: var(--muted);
+  }
+  .footer-social:hover { border-color: var(--charge); color: var(--charge); background: rgba(61,255,126,0.05); }
+  .footer-col {}
+  .footer-col-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+    cursor: none;
+  }
+  .footer-links a:hover { color: var(--white); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-copy {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .footer-legal {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+  .footer-legal a {
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    cursor: none;
+    transition: color 0.2s;
+  }
+  .footer-legal a:hover { color: var(--white); }
+
+  /* Reveal animations */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* Mobile nav toggle */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: none;
+    padding: 4px;
+  }
+  .nav-hamburger span {
+    width: 24px; height: 1.5px;
+    background: var(--white);
+    transition: transform 0.3s, opacity 0.3s;
+    display: block;
+  }
+
+  @media (max-width: 1024px) {
+    nav { padding: 20px 32px; }
+    nav.scrolled { padding: 14px 32px; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+    .hero { padding: 0 32px 60px; }
+    .stats-strip { grid-template-columns: repeat(2, 1fr); padding: 24px 32px; }
+    .section-inner { padding: 0 32px; }
+    .solutions-grid { grid-template-columns: repeat(2, 1fr); }
+    .about-snap-grid { grid-template-columns: 1fr; gap: 48px; }
+    .why-africa-layout { grid-template-columns: 1fr; }
+    .why-sticky { position: relative; top: 0; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card.featured { grid-row: span 1; }
+    .partner-types { grid-template-columns: repeat(3, 1fr); }
+    footer { padding: 60px 32px 32px; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .about-hero { padding: 100px 32px 60px; }
+    .story-grid { grid-template-columns: 1fr; }
+    .story-nav { display: none; }
+    .solution-detail-item { grid-template-columns: 1fr; gap: 32px; }
+    .sustain-grid { grid-template-columns: 1fr 1fr; }
+    .impact-metrics { grid-template-columns: 1fr 1fr; }
+    .partner-model-grid { grid-template-columns: 1fr; }
+    .news-featured { grid-template-columns: 1fr; }
+    .news-grid { grid-template-columns: 1fr 1fr; }
+    .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+    .project-full-body { grid-template-columns: 1fr; }
+    .project-full-section { border-right: none; border-bottom: 1px solid var(--border-dim); }
+    .cta-section { padding: 80px 32px; }
+  }
+
+  @media (max-width: 640px) {
+    .hero-headline { font-size: 40px; }
+    .hero-visual { display: none; }
+    .pulse-ring { display: none; }
+    .stats-strip { grid-template-columns: 1fr 1fr; }
+    .solutions-grid { grid-template-columns: 1fr; }
+    .partner-types { grid-template-columns: 1fr 1fr; }
+    .sustain-grid { grid-template-columns: 1fr; }
+    .news-grid { grid-template-columns: 1fr; }
+    .impact-metrics { grid-template-columns: 1fr 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; }
+    .hero-actions { flex-direction: column; align-items: flex-start; }
+    .values-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Scroll-triggered number counters */
+  .counter { display: inline-block; }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Navigation -->
+<nav id="navbar">
+  <a href="#" class="nav-logo" onclick="showPage('home'); return false;">
+    <div class="logo-mark">
+      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="18,2 34,10 34,26 18,34 2,26 2,10" fill="none" stroke="#3dff7e" stroke-width="1.5"/>
+        <polygon points="18,8 28,13 28,23 18,28 8,23 8,13" fill="none" stroke="#3dff7e" stroke-width="0.75" opacity="0.4"/>
+        <path d="M12 18 L16 14 L20 18 L24 14" stroke="#3dff7e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <circle cx="18" cy="18" r="2.5" fill="#3dff7e"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      KineticGrid Africa
+      <span>Clean Energy & Mobility</span>
+    </div>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('about'); return false;">About</a></li>
+    <li><a href="#" onclick="showPage('solutions'); return false;">Solutions</a></li>
+    <li><a href="#" onclick="showPage('projects'); return false;">Projects</a></li>
+    <li><a href="#" onclick="showPage('sustainability'); return false;">Sustainability</a></li>
+    <li><a href="#" onclick="showPage('partnerships'); return false;">Partnerships</a></li>
+    <li><a href="#" onclick="showPage('news'); return false;">Insights</a></li>
+  </ul>
+
+  <a href="#" onclick="showPage('contact'); return false;" class="nav-cta">Contact Us</a>
+  <div class="nav-hamburger" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ===== HOME PAGE ===== -->
+<div class="page active" id="page-home">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="pulse-ring"></div>
+    <div class="pulse-ring"></div>
+    <div class="pulse-ring"></div>
+
+    <!-- Abstract charging network visualization -->
+    <div class="hero-visual">
+      <svg viewBox="0 0 520 520" fill="none" xmlns="http://www.w3.org/2000/svg" opacity="0.9">
+        <!-- Outer hexagonal grid -->
+        <circle cx="260" cy="260" r="240" stroke="rgba(61,255,126,0.06)" stroke-width="1"/>
+        <circle cx="260" cy="260" r="180" stroke="rgba(61,255,126,0.08)" stroke-width="1"/>
+        <circle cx="260" cy="260" r="120" stroke="rgba(61,255,126,0.1)" stroke-width="1"/>
+        <circle cx="260" cy="260" r="60" stroke="rgba(61,255,126,0.15)" stroke-width="1"/>
+        <!-- Network nodes -->
+        <circle cx="260" cy="260" r="6" fill="#3dff7e"/>
+        <circle cx="260" cy="260" r="18" fill="none" stroke="rgba(61,255,126,0.3)" stroke-width="1"/>
+        <!-- Node connections -->
+        <line x1="260" y1="260" x2="380" y2="150" stroke="rgba(61,255,126,0.15)" stroke-width="1"/>
+        <line x1="260" y1="260" x2="420" y2="280" stroke="rgba(61,255,126,0.12)" stroke-width="1"/>
+        <line x1="260" y1="260" x2="340" y2="400" stroke="rgba(61,255,126,0.1)" stroke-width="1"/>
+        <line x1="260" y1="260" x2="140" y2="390" stroke="rgba(61,255,126,0.12)" stroke-width="1"/>
+        <line x1="260" y1="260" x2="100" y2="240" stroke="rgba(61,255,126,0.15)" stroke-width="1"/>
+        <line x1="260" y1="260" x2="180" y2="110" stroke="rgba(61,255,126,0.1)" stroke-width="1"/>
+        <!-- Peripheral nodes -->
+        <circle cx="380" cy="150" r="5" fill="rgba(61,255,126,0.7)"/>
+        <circle cx="380" cy="150" r="12" fill="none" stroke="rgba(61,255,126,0.2)" stroke-width="1"/>
+        <circle cx="420" cy="280" r="4" fill="rgba(61,255,126,0.5)"/>
+        <circle cx="340" cy="400" r="5" fill="rgba(61,255,126,0.6)"/>
+        <circle cx="140" cy="390" r="4" fill="rgba(61,255,126,0.5)"/>
+        <circle cx="100" cy="240" r="5" fill="rgba(61,255,126,0.7)"/>
+        <circle cx="180" cy="110" r="4" fill="rgba(61,255,126,0.4)"/>
+        <!-- Secondary connections -->
+        <line x1="380" y1="150" x2="420" y2="280" stroke="rgba(61,255,126,0.07)" stroke-width="1"/>
+        <line x1="420" y1="280" x2="340" y2="400" stroke="rgba(61,255,126,0.07)" stroke-width="1"/>
+        <line x1="340" y1="400" x2="140" y2="390" stroke="rgba(61,255,126,0.07)" stroke-width="1"/>
+        <line x1="100" cy="240" x1="100" y1="240" x2="140" y2="390" stroke="rgba(61,255,126,0.07)" stroke-width="1"/>
+        <line x1="100" y1="240" x2="180" y2="110" stroke="rgba(61,255,126,0.07)" stroke-width="1"/>
+        <line x1="180" y1="110" x2="380" y2="150" stroke="rgba(61,255,126,0.07)" stroke-width="1"/>
+        <!-- Lightning bolt - EV charge icon at center -->
+        <path d="M266 240 L252 262 L262 262 L254 280 L270 258 L260 258 Z" fill="#3dff7e" opacity="0.9"/>
+        <!-- Data flow animations along lines -->
+        <circle cx="320" cy="205" r="2.5" fill="#3dff7e" opacity="0.8">
+          <animateMotion dur="3s" repeatCount="indefinite" path="M0,0 L120,-110"/>
+        </circle>
+        <circle cx="320" cy="205" r="2" fill="#3dff7e" opacity="0.6">
+          <animateMotion dur="4s" repeatCount="indefinite" begin="1s" path="M0,0 L160,20"/>
+        </circle>
+        <circle cx="260" cy="260" r="2" fill="#3dff7e" opacity="0.7">
+          <animateMotion dur="3.5s" repeatCount="indefinite" begin="0.5s" path="M0,0 L80,140"/>
+        </circle>
+      </svg>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-line"></div>
+        <span class="hero-eyebrow-text">KineticGrid Africa — Est. 2024</span>
+      </div>
+      <h1 class="hero-headline">
+        Powering Africa's
+        <em>Electric Future</em>
+      </h1>
+      <p class="hero-sub">Building the infrastructure, energy systems, and technology that will drive sustainable mobility across Africa.</p>
+      <div class="hero-actions">
+        <a href="#" onclick="showPage('contact'); return false;" class="btn-primary">
+          Partner With Us
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#" onclick="showPage('solutions'); return false;" class="btn-secondary">Explore Solutions</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span class="hero-scroll-text">Scroll</span>
+    </div>
+  </section>
+
+  <!-- Stats Strip -->
+  <div class="stats-strip">
+    <div class="stat-item">
+      <div class="stat-number"><span class="counter" data-target="54">0</span>+</div>
+      <div class="stat-label">African Nations Targeted</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number"><span class="counter" data-target="500">0</span>MW</div>
+      <div class="stat-label">Renewable Energy Capacity</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number"><span class="counter" data-target="1200">0</span>+</div>
+      <div class="stat-label">Planned Charging Stations</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">$<span class="counter" data-target="2.4">0</span>B</div>
+      <div class="stat-label">Infrastructure Investment Target</div>
+    </div>
+  </div>
+
+  <!-- About Snapshot -->
+  <section class="about-snap">
+    <div class="section-inner">
+      <div class="about-snap-grid">
+        <div class="about-snap-left reveal">
+          <div class="section-eyebrow">
+            <div class="section-eyebrow-dot"></div>
+            <span class="section-eyebrow-text">Who We Are</span>
+          </div>
+          <h2 class="section-title" style="margin-bottom:28px;">Africa's Clean Mobility Infrastructure Company</h2>
+          <p class="about-snap-body">KineticGrid Africa is building the <strong>backbone of sustainable transportation</strong> across the continent. We develop EV charging networks, battery infrastructure, renewable energy systems, and smart mobility technology tailored for Africa's unique landscape and opportunity.</p>
+          <p class="about-snap-body">We are not a startup. We are a <strong>long-term infrastructure partner</strong> — for governments, investors, fleet operators, and communities seeking to lead Africa's clean energy transition.</p>
+          <a href="#" onclick="showPage('about'); return false;" class="section-link" style="margin-top:8px;">
+            Our full story
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+        <div class="about-snap-right reveal reveal-delay-2">
+          <div class="about-visual-box">
+            <div class="about-pillars">
+              <div class="pillar">
+                <div class="pillar-icon">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M8 2L14 5V11L8 14L2 11V5L8 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                </div>
+                <div>
+                  <div class="pillar-title">Infrastructure First</div>
+                  <div class="pillar-text">We build the physical and digital backbone that enables EV adoption at continental scale.</div>
+                </div>
+              </div>
+              <div class="pillar">
+                <div class="pillar-icon">
+                  <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1V3M8 13V15M1 8H3M13 8H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </div>
+                <div>
+                  <div class="pillar-title">Solar-Powered by Default</div>
+                  <div class="pillar-text">Every charging deployment integrates renewable energy — making clean mobility truly clean.</div>
+                </div>
+              </div>
+              <div class="pillar">
+                <div class="pillar-icon">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M3 13V7L8 2L13 7V13H10V9H6V13H3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                </div>
+                <div>
+                  <div class="pillar-title">Built for Africa</div>
+                  <div class="pillar-text">Designed around African grid realities, urban density, logistics needs, and climate conditions.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Solutions -->
+  <section class="solutions">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <div>
+          <div class="section-eyebrow">
+            <div class="section-eyebrow-dot"></div>
+            <span class="section-eyebrow-text">What We Build</span>
+          </div>
+          <h2 class="section-title">End-to-End Clean Mobility Solutions</h2>
+        </div>
+        <a href="#" onclick="showPage('solutions'); return false;" class="section-link">
+          All solutions
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="solutions-grid">
+        <a href="#" onclick="showPage('solutions'); return false;" class="solution-card">
+          <div class="sol-number">01</div>
+          <svg class="sol-icon" viewBox="0 0 48 48" fill="none"><rect x="8" y="16" width="32" height="24" rx="2" stroke="#3dff7e" stroke-width="1.5"/><path d="M16 16V12a8 8 0 0116 0v4" stroke="#3dff7e" stroke-width="1.5"/><path d="M20 28h8M24 24v8" stroke="#3dff7e" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <div class="sol-title">EV Infrastructure Development</div>
+          <div class="sol-desc">End-to-end development of EV charging infrastructure for commercial, residential, and highway applications.</div>
+          <svg class="sol-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#" onclick="showPage('solutions'); return false;" class="solution-card">
+          <div class="sol-number">02</div>
+          <svg class="sol-icon" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="16" stroke="#3dff7e" stroke-width="1.5"/><circle cx="24" cy="24" r="8" stroke="#3dff7e" stroke-width="1.5" stroke-dasharray="4 4"/><path d="M24 8V4M24 44V40M8 24H4M44 24H40" stroke="#3dff7e" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <div class="sol-title">Charging Networks</div>
+          <div class="sol-desc">Smart, interconnected charging networks with real-time monitoring, payment systems, and grid management.</div>
+          <svg class="sol-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#" onclick="showPage('solutions'); return false;" class="solution-card">
+          <div class="sol-number">03</div>
+          <svg class="sol-icon" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="20" r="8" stroke="#3dff7e" stroke-width="1.5"/><path d="M16 20 Q24 36 32 20" stroke="#3dff7e" stroke-width="1.5"/><path d="M8 12L16 20M40 12L32 20M24 12V4" stroke="#3dff7e" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <div class="sol-title">Renewable Energy Integration</div>
+          <div class="sol-desc">Solar and hybrid renewable energy systems powering every charging node — on-grid, off-grid, and microgrid solutions.</div>
+          <svg class="sol-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#" onclick="showPage('solutions'); return false;" class="solution-card">
+          <div class="sol-number">04</div>
+          <svg class="sol-icon" viewBox="0 0 48 48" fill="none"><rect x="4" y="20" width="40" height="20" rx="2" stroke="#3dff7e" stroke-width="1.5"/><circle cx="14" cy="40" r="4" stroke="#3dff7e" stroke-width="1.5"/><circle cx="34" cy="40" r="4" stroke="#3dff7e" stroke-width="1.5"/><path d="M4 28h40M12 20l4-8h16l4 8" stroke="#3dff7e" stroke-width="1.5"/></svg>
+          <div class="sol-title">EV Sales & Leasing</div>
+          <div class="sol-desc">Access to a curated range of electric vehicles for private, commercial, and fleet use — with flexible financing.</div>
+          <svg class="sol-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#" onclick="showPage('solutions'); return false;" class="solution-card">
+          <div class="sol-number">05</div>
+          <svg class="sol-icon" viewBox="0 0 48 48" fill="none"><rect x="4" y="24" width="20" height="16" rx="2" stroke="#3dff7e" stroke-width="1.5"/><rect x="24" y="18" width="20" height="22" rx="2" stroke="#3dff7e" stroke-width="1.5"/><path d="M8 24V14a4 4 0 014-4h8M28 18V10a4 4 0 00-4-4H20" stroke="#3dff7e" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <div class="sol-title">Fleet Electrification</div>
+          <div class="sol-desc">Complete fleet transition programs — from assessment and procurement to charging infrastructure and operational support.</div>
+          <svg class="sol-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#" onclick="showPage('solutions'); return false;" class="solution-card">
+          <div class="sol-number">06</div>
+          <svg class="sol-icon" viewBox="0 0 48 48" fill="none"><rect x="8" y="8" width="32" height="32" rx="2" stroke="#3dff7e" stroke-width="1.5"/><path d="M8 20h32M8 32h32M20 8v32M32 8v32" stroke="#3dff7e" stroke-width="1.5" opacity="0.4"/><circle cx="24" cy="24" r="4" fill="#3dff7e" opacity="0.6"/></svg>
+          <div class="sol-title">Mobility Hubs</div>
+          <div class="sol-desc">Integrated urban mobility hubs combining EV charging, battery swapping, public transit, and smart logistics.</div>
+          <svg class="sol-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Africa -->
+  <section class="why-africa">
+    <div class="section-inner">
+      <div class="why-africa-layout">
+        <div class="why-sticky">
+          <div class="section-eyebrow">
+            <div class="section-eyebrow-dot"></div>
+            <span class="section-eyebrow-text">The Opportunity</span>
+          </div>
+          <h2 class="why-title">Why <span>Africa</span> Is the World's Greatest Clean Energy Frontier</h2>
+          <p class="why-intro">The continent that gave the world its energy resources is now positioned to lead its clean energy revolution — and KineticGrid Africa is building the infrastructure that makes it real.</p>
+          <a href="#" onclick="showPage('about'); return false;" class="btn-secondary" style="display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:0.08em;margin-top:8px;">
+            Read Our Story
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+        <div class="why-cards">
+          <div class="why-card">
+            <div class="why-card-num">01</div>
+            <div class="why-card-content">
+              <div class="why-card-title">Fastest-Growing Urban Centers</div>
+              <div class="why-card-text">Africa is adding 40,000 new urban residents every day. By 2050, the continent will host 1.5 billion city dwellers — all needing clean, affordable, connected mobility infrastructure built from the ground up.</div>
+            </div>
+          </div>
+          <div class="why-card">
+            <div class="why-card-num">02</div>
+            <div class="why-card-content">
+              <div class="why-card-title">Unmatched Renewable Energy Potential</div>
+              <div class="why-card-text">Africa holds 60% of the world's best solar resources. The continent can generate more solar energy than the rest of the world combined — creating a natural foundation for solar-powered EV charging at scale.</div>
+            </div>
+          </div>
+          <div class="why-card">
+            <div class="why-card-num">03</div>
+            <div class="why-card-content">
+              <div class="why-card-title">A Transport System Being Built Now</div>
+              <div class="why-card-text">Unlike Europe or North America, Africa is not replacing old infrastructure — it is building new. This creates a unique leapfrog opportunity to design transportation networks that are electric and clean from day one.</div>
+            </div>
+          </div>
+          <div class="why-card">
+            <div class="why-card-num">04</div>
+            <div class="why-card-content">
+              <div class="why-card-title">Climate Responsibility & Investment</div>
+              <div class="why-card-text">Over $100 billion in climate finance is being directed toward Africa annually. Governments, development finance institutions, and impact investors are actively seeking infrastructure partners with long-term vision and execution capability.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Projects -->
+  <section class="projects" id="home-projects">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <div>
+          <div class="section-eyebrow">
+            <div class="section-eyebrow-dot"></div>
+            <span class="section-eyebrow-text">Initiatives</span>
+          </div>
+          <h2 class="section-title">Infrastructure Programs in Development</h2>
+        </div>
+        <a href="#" onclick="showPage('projects'); return false;" class="section-link">
+          View all projects
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="projects-grid">
+        <div class="project-card featured reveal">
+          <div class="project-tag">
+            <div class="project-tag-dot"></div>
+            In Development
+          </div>
+          <div class="project-title">Lagos EV Charging Corridor</div>
+          <div class="project-desc">A 200-station fast-charging network spanning the Lagos metropolitan area — connecting Ikeja, Victoria Island, Lekki, and the port complex. Integrated with solar carports and smart grid management software.</div>
+          <div class="project-metrics">
+            <div class="project-metric">
+              <div class="project-metric-val">200</div>
+              <div class="project-metric-label">Charging Stations</div>
+            </div>
+            <div class="project-metric">
+              <div class="project-metric-val">150MW</div>
+              <div class="project-metric-label">Solar Capacity</div>
+            </div>
+            <div class="project-metric">
+              <div class="project-metric-val">12M+</div>
+              <div class="project-metric-label">People Served</div>
+            </div>
+          </div>
+          <svg class="project-visual" width="200" height="200" viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="90" stroke="rgba(61,255,126,0.5)" stroke-width="1"/>
+            <circle cx="100" cy="100" r="60" stroke="rgba(61,255,126,0.3)" stroke-width="1"/>
+            <circle cx="100" cy="100" r="30" fill="rgba(61,255,126,0.2)"/>
+          </svg>
+        </div>
+        <div class="project-card reveal reveal-delay-1">
+          <div class="project-tag">
+            <div class="project-tag-dot"></div>
+            Planning Phase
+          </div>
+          <div class="project-title">Abuja Smart Mobility Hub</div>
+          <div class="project-desc">A purpose-built mobility hub serving as a model for African capital cities — combining EV charging, public transit integration, and smart logistics.</div>
+          <div class="project-metrics">
+            <div class="project-metric">
+              <div class="project-metric-val">80</div>
+              <div class="project-metric-label">EV Bays</div>
+            </div>
+            <div class="project-metric">
+              <div class="project-metric-val">5MW</div>
+              <div class="project-metric-label">Solar Array</div>
+            </div>
+          </div>
+        </div>
+        <div class="project-card reveal reveal-delay-2">
+          <div class="project-tag">
+            <div class="project-tag-dot"></div>
+            Concept Stage
+          </div>
+          <div class="project-title">East Africa Solar Charging Network</div>
+          <div class="project-desc">A regional solar charging corridor spanning Kenya, Tanzania, and Uganda — supporting logistics fleets and public transport electrification.</div>
+          <div class="project-metrics">
+            <div class="project-metric">
+              <div class="project-metric-val">3</div>
+              <div class="project-metric-label">Countries</div>
+            </div>
+            <div class="project-metric">
+              <div class="project-metric-val">300+</div>
+              <div class="project-metric-label">Stations</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partnerships -->
+  <section class="partnerships">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <div>
+          <div class="section-eyebrow">
+            <div class="section-eyebrow-dot"></div>
+            <span class="section-eyebrow-text">Who We Work With</span>
+          </div>
+          <h2 class="section-title">Strategic Partnership Ecosystem</h2>
+        </div>
+        <a href="#" onclick="showPage('partnerships'); return false;" class="section-link">
+          Partnership models
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="partner-types">
+        <div class="partner-type">
+          <div class="partner-type-icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 21h18M5 21V9l7-6 7 6v12M9 21v-6h6v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="partner-type-name">Governments</div>
+          <div class="partner-type-text">National & municipal EV policy implementation</div>
+        </div>
+        <div class="partner-type">
+          <div class="partner-type-icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="partner-type-name">Investors</div>
+          <div class="partner-type-text">Infrastructure equity & project finance</div>
+        </div>
+        <div class="partner-type">
+          <div class="partner-type-icon">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="partner-type-name">Development Agencies</div>
+          <div class="partner-type-text">DFIs & climate finance programs</div>
+        </div>
+        <div class="partner-type">
+          <div class="partner-type-icon">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" stroke="currentColor" stroke-width="1.5"/></svg>
+          </div>
+          <div class="partner-type-name">Technology Partners</div>
+          <div class="partner-type-text">OEMs, software, grid & energy tech</div>
+        </div>
+        <div class="partner-type">
+          <div class="partner-type-icon">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="1" y="8" width="22" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 8V6a7 7 0 0114 0v2M5 16h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="partner-type-name">Fleet Operators</div>
+          <div class="partner-type-text">Logistics, transit & commercial fleets</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2 class="cta-title">Let's Build Africa's<br><span>Clean Mobility Future</span><br>Together</h2>
+    <p class="cta-sub">Join us in creating infrastructure that matters for generations to come.</p>
+    <div class="cta-actions">
+      <a href="#" onclick="showPage('contact'); return false;" class="btn-primary">
+        Start a Conversation
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#" onclick="showPage('partnerships'); return false;" class="btn-secondary">Partnership Models</a>
+    </div>
+  </div>
+
+</div><!-- /page-home -->
+
+
+<!-- ===== ABOUT PAGE ===== -->
+<div class="page" id="page-about">
+  <div class="about-hero">
+    <div class="about-hero-bg-text">KineticGrid</div>
+    <div style="position:relative;z-index:2;">
+      <div class="page-label">
+        <div class="page-label-line"></div>
+        <span class="page-label-text">About Us</span>
+      </div>
+      <h1 class="page-title">Built to<br>Transform Africa</h1>
+    </div>
+  </div>
+
+  <section class="story-section">
+    <div class="section-inner">
+      <div class="story-grid">
+        <div class="story-nav">
+          <a href="#our-story" class="story-nav-item active">
+            <div class="story-nav-item-dot"></div>
+            <span class="story-nav-item-text">Our Story</span>
+          </a>
+          <a href="#vision-mission" class="story-nav-item">
+            <div class="story-nav-item-dot"></div>
+            <span class="story-nav-item-text">Vision & Mission</span>
+          </a>
+          <a href="#why-exist" class="story-nav-item">
+            <div class="story-nav-item-dot"></div>
+            <span class="story-nav-item-text">Why We Exist</span>
+          </a>
+          <a href="#values" class="story-nav-item">
+            <div class="story-nav-item-dot"></div>
+            <span class="story-nav-item-text">Our Values</span>
+          </a>
+          <a href="#sustainability-commit" class="story-nav-item">
+            <div class="story-nav-item-dot"></div>
+            <span class="story-nav-item-text">Sustainability</span>
+          </a>
+        </div>
+        <div class="story-content">
+          <div class="story-block" id="our-story">
+            <div class="story-block-label">Our Story</div>
+            <div class="story-block-title">A Company Born from Necessity, Built with Ambition</div>
+            <div class="story-block-text">
+              <p>KineticGrid Africa began with a simple, urgent observation: <strong>Africa is urbanizing faster than any continent in history</strong>, yet the infrastructure being built to support this growth is still largely dependent on fossil fuels and imported technology.</p>
+              <p>Our founders recognized that the transition to clean transportation was not just an environmental responsibility — it was an <strong>economic imperative and a generational opportunity</strong>. The continent that holds some of the world's greatest renewable energy reserves was preparing to import millions of combustion-engine vehicles from aging industrial economies.</p>
+              <p>That paradox is what KineticGrid Africa was created to resolve. We exist to ensure that Africa's mobility future is designed on African terms — leveraging African sunlight, serving African cities, creating African jobs, and building African institutional capability in clean energy infrastructure.</p>
+            </div>
+          </div>
+          <div class="story-block" id="vision-mission">
+            <div class="story-block-label">Vision & Mission</div>
+            <div class="story-block-title">The Future We Are Committed to Building</div>
+            <div class="story-block-text">
+              <p><strong>Our Vision:</strong> A continent where every vehicle runs on clean energy, every city breathes clean air, and every African community benefits from the wealth created by sustainable infrastructure.</p>
+              <p><strong>Our Mission:</strong> To accelerate Africa's transition to clean transportation by developing world-class EV infrastructure, renewable energy systems, and smart mobility technology — designed for African scale, conditions, and ambition.</p>
+              <p>We measure our success not just in charging stations installed or megawatts deployed, but in <strong>cities transformed, emissions avoided, jobs created, and a continent repositioned</strong> at the forefront of the global clean energy economy.</p>
+            </div>
+          </div>
+          <div class="story-block" id="why-exist">
+            <div class="story-block-label">Why We Exist</div>
+            <div class="story-block-title">The Problem Only Infrastructure Can Solve</div>
+            <div class="story-block-text">
+              <p>The challenge of EV adoption in Africa is not primarily about vehicle cost or consumer desire. It is about <strong>infrastructure confidence</strong>. Buyers will not purchase electric vehicles until they trust that charging infrastructure exists. Charging networks will not be built until demand is demonstrated. This is the classic infrastructure paradox.</p>
+              <p>KineticGrid Africa's role is to <strong>break this cycle</strong> by deploying infrastructure ahead of demand, building the confidence that unlocks mass adoption, and creating the ecosystem — physical, financial, and institutional — that makes clean mobility inevitable rather than aspirational.</p>
+            </div>
+          </div>
+          <div class="story-block" id="values">
+            <div class="story-block-label">Our Values</div>
+            <div class="story-block-title">The Principles That Guide Every Decision</div>
+            <div class="values-grid">
+              <div class="value-item">
+                <div class="value-item-title">Institutional Integrity</div>
+                <div class="value-item-text">We operate with the rigor and accountability expected of the largest development finance institutions.</div>
+              </div>
+              <div class="value-item">
+                <div class="value-item-title">African Ownership</div>
+                <div class="value-item-text">We prioritize local expertise, local employment, and local institutional development in every market we enter.</div>
+              </div>
+              <div class="value-item">
+                <div class="value-item-title">Long-Term Thinking</div>
+                <div class="value-item-text">We build for 30-year horizons, not quarterly cycles. Infrastructure requires patience and precision.</div>
+              </div>
+              <div class="value-item">
+                <div class="value-item-title">Radical Transparency</div>
+                <div class="value-item-text">Our partners — governments, investors, communities — receive complete visibility into our operations, performance, and impact.</div>
+              </div>
+            </div>
+          </div>
+          <div class="story-block" id="sustainability-commit">
+            <div class="story-block-label">Sustainability Commitment</div>
+            <div class="story-block-title">More Than Clean Energy — A Commitment to Regenerative Infrastructure</div>
+            <div class="story-block-text">
+              <p>We do not merely aim to be carbon-neutral. We aim to be <strong>carbon-regenerative</strong> — building infrastructure that actively removes more carbon from the atmosphere than it emits over its lifetime, while creating the social and economic conditions for communities to thrive.</p>
+              <p>Every KineticGrid Africa project is assessed against a triple-impact framework: <strong>environmental performance, community development, and economic inclusion</strong>. We report against international ESG standards and align our targets with Africa's NDCs under the Paris Agreement.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Roadmap -->
+  <section class="roadmap">
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-eyebrow-dot"></div>
+        <span class="section-eyebrow-text">Future Roadmap</span>
+      </div>
+      <h2 class="section-title" style="margin-bottom:0;">The Road Ahead</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2024 — 2025</div>
+          <div class="timeline-title">Foundation & Market Entry</div>
+          <div class="timeline-text">Company formation, strategic partnerships, pilot infrastructure deployments in Nigeria. First charging installations and market validation programs across Lagos and Abuja corridors.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2025 — 2026</div>
+          <div class="timeline-title">National Network Buildout</div>
+          <div class="timeline-text">Rapid expansion across Nigeria's major cities. First fleet electrification partnerships. Launch of solar-integrated charging networks. Series A fundraising and government concession agreements.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2026 — 2028</div>
+          <div class="timeline-title">West Africa Regional Expansion</div>
+          <div class="timeline-text">Market entry into Ghana, Côte d'Ivoire, Senegal, and Kenya. Cross-border EV logistics corridor deployment. Battery swapping network pilot. Development finance institutional funding.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2028 — 2032</div>
+          <div class="timeline-title">Pan-African Infrastructure Network</div>
+          <div class="timeline-text">Continental network across 15+ markets. Mobility hub developments in 10 major cities. $2.4B infrastructure portfolio. IPO readiness and institutional asset management capability.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2032 +</div>
+          <div class="timeline-title">Africa's Clean Mobility Backbone</div>
+          <div class="timeline-text">KineticGrid Africa as the continent's leading clean infrastructure institution — a model for emerging market energy transition globally, generating returns that fund the next generation of African infrastructure.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-section">
+    <h2 class="cta-title">Become Part of<br><span>This Story</span></h2>
+    <p class="cta-sub">We are building something that will outlast all of us. Join us.</p>
+    <div class="cta-actions">
+      <a href="#" onclick="showPage('contact'); return false;" class="btn-primary">Get in Touch</a>
+      <a href="#" onclick="showPage('partnerships'); return false;" class="btn-secondary">Partnership Opportunities</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== SOLUTIONS PAGE ===== -->
+<div class="page" id="page-solutions">
+  <div class="about-hero">
+    <div class="about-hero-bg-text">Solutions</div>
+    <div style="position:relative;z-index:2;">
+      <div class="page-label">
+        <div class="page-label-line"></div>
+        <span class="page-label-text">Solutions</span>
+      </div>
+      <h1 class="page-title">What We<br>Build & Deploy</h1>
+    </div>
+  </div>
+
+  <section class="solutions-detail">
+    <div class="section-inner">
+      <div class="solution-detail-item">
+        <div>
+          <div class="solution-detail-num">01</div>
+          <div class="solution-detail-name">EV Infrastructure Development</div>
+          <div class="solution-detail-overview">We design, engineer, procure, construct, and commission electric vehicle charging infrastructure at all levels — from single-site commercial installations to large-scale corridor networks.</div>
+          <div class="solution-tags">
+            <span class="solution-tag">DC Fast Charging</span>
+            <span class="solution-tag">AC Level 2</span>
+            <span class="solution-tag">Highway Corridors</span>
+            <span class="solution-tag">Urban Networks</span>
+          </div>
+        </div>
+        <div class="solution-detail-right">
+          <div class="detail-tabs">
+            <div class="detail-tab active" onclick="switchTab(this, 'benefits-1')">Benefits</div>
+            <div class="detail-tab" onclick="switchTab(this, 'usecases-1')">Use Cases</div>
+            <div class="detail-tab" onclick="switchTab(this, 'impact-1')">Impact</div>
+          </div>
+          <div class="detail-panel active" id="benefits-1">
+            <ul class="detail-list">
+              <li>Turnkey delivery from site selection through to commissioning and operations</li>
+              <li>Network-level monitoring and asset management software included</li>
+              <li>Multi-standard compatibility supporting all major EV platforms</li>
+              <li>Grid-optimized load management reducing peak demand costs by up to 40%</li>
+              <li>Modular design enabling rapid scale-up as demand grows</li>
+            </ul>
+          </div>
+          <div class="detail-panel" id="usecases-1">
+            <ul class="detail-list">
+              <li>Highway rest-stop charging corridors between major cities</li>
+              <li>Commercial real estate and retail destination charging</li>
+              <li>Government facility charging for official EV fleets</li>
+              <li>Airport and transit hub public fast-charging</li>
+              <li>Industrial park and logistics hub depot charging</li>
+            </ul>
+          </div>
+          <div class="detail-panel" id="impact-1">
+            <ul class="detail-list">
+              <li>Each fast-charging station enables up to 200 EV journeys per day</li>
+              <li>Solar integration eliminates up to 90% of grid electricity demand</li>
+              <li>Estimated 1,200 tonnes CO₂ avoided per station annually</li>
+              <li>Local employment during construction and ongoing operations</li>
+              <li>Revenue-sharing models benefit host communities and municipalities</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="solution-detail-item">
+        <div>
+          <div class="solution-detail-num">02</div>
+          <div class="solution-detail-name">Smart Charging Networks</div>
+          <div class="solution-detail-overview">We operate networked EV charging infrastructure with intelligent management software, real-time monitoring, mobile payment integration, and predictive maintenance — built for African grid conditions.</div>
+          <div class="solution-tags">
+            <span class="solution-tag">Network Management</span>
+            <span class="solution-tag">Mobile Payments</span>
+            <span class="solution-tag">Grid Optimization</span>
+            <span class="solution-tag">Real-Time Data</span>
+          </div>
+        </div>
+        <div class="solution-detail-right">
+          <div class="detail-tabs">
+            <div class="detail-tab active" onclick="switchTab(this, 'benefits-2')">Benefits</div>
+            <div class="detail-tab" onclick="switchTab(this, 'usecases-2')">Use Cases</div>
+            <div class="detail-tab" onclick="switchTab(this, 'impact-2')">Impact</div>
+          </div>
+          <div class="detail-panel active" id="benefits-2">
+            <ul class="detail-list">
+              <li>99.5% network uptime with proactive fault detection and response</li>
+              <li>Mobile app and USSD payment supporting all major African payment platforms</li>
+              <li>Roaming agreements enabling cross-network charging access</li>
+              <li>Dynamic pricing optimizing revenue during peak and off-peak periods</li>
+              <li>Fleet billing and corporate account management</li>
+            </ul>
+          </div>
+          <div class="detail-panel" id="usecases-2">
+            <ul class="detail-list">
+              <li>Public charging infrastructure operated as a service for municipalities</li>
+              <li>White-label network solutions for energy utilities and fuel retailers</li>
+              <li>Fleet charging management for logistics companies</li>
+              <li>Workplace charging programs for corporate campuses</li>
+            </ul>
+          </div>
+          <div class="detail-panel" id="impact-2">
+            <ul class="detail-list">
+              <li>Network efficiency reduces energy waste by 35% versus unmanaged charging</li>
+              <li>Data insights inform urban planning and transport policy decisions</li>
+              <li>Revenue-positive business model ensuring long-term network sustainability</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="solution-detail-item">
+        <div>
+          <div class="solution-detail-num">03</div>
+          <div class="solution-detail-name">Renewable Energy Integration</div>
+          <div class="solution-detail-overview">Solar PV, battery storage, and hybrid microgrid systems that power our charging networks — and can be extended to supply clean energy to surrounding communities, businesses, and facilities.</div>
+          <div class="solution-tags">
+            <span class="solution-tag">Solar PV</span>
+            <span class="solution-tag">Battery Storage</span>
+            <span class="solution-tag">Microgrids</span>
+            <span class="solution-tag">Off-Grid</span>
+          </div>
+        </div>
+        <div class="solution-detail-right">
+          <div class="detail-tabs">
+            <div class="detail-tab active" onclick="switchTab(this, 'benefits-3')">Benefits</div>
+            <div class="detail-tab" onclick="switchTab(this, 'usecases-3')">Use Cases</div>
+            <div class="detail-tab" onclick="switchTab(this, 'impact-3')">Impact</div>
+          </div>
+          <div class="detail-panel active" id="benefits-3">
+            <ul class="detail-list">
+              <li>Charging infrastructure that operates independently of grid instability</li>
+              <li>Battery storage enabling overnight charging from daytime solar generation</li>
+              <li>Reduces operational electricity costs by 60–80% versus pure grid supply</li>
+              <li>Excess capacity can be sold back to grid or supplied to community</li>
+              <li>Carbon-free charging credentials for fleet ESG reporting</li>
+            </ul>
+          </div>
+          <div class="detail-panel" id="usecases-3">
+            <ul class="detail-list">
+              <li>Off-grid charging stations in peri-urban and rural corridors</li>
+              <li>Solar carport installations at commercial and industrial facilities</li>
+              <li>Microgrid development for mobility hubs and economic zones</li>
+              <li>Hybrid backup systems for grid-tied stations in unreliable supply areas</li>
+            </ul>
+          </div>
+          <div class="detail-panel" id="impact-3">
+            <ul class="detail-list">
+              <li>Each MW of solar capacity avoids 900+ tonnes of CO₂ annually</li>
+              <li>Energy access benefits extend beyond charging to surrounding communities</li>
+              <li>Creates permanent skilled employment in solar operations and maintenance</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="solution-detail-item">
+        <div>
+          <div class="solution-detail-num">04</div>
+          <div class="solution-detail-name">Fleet Electrification</div>
+          <div class="solution-detail-overview">End-to-end fleet transition services for logistics companies, public transport operators, government agencies, and corporate fleets — from initial feasibility to full operational conversion.</div>
+          <div class="solution-tags">
+            <span class="solution-tag">Fleet Assessment</span>
+            <span class="solution-tag">EV Procurement</span>
+            <span class="solution-tag">Depot Charging</span>
+            <span class="solution-tag">Operations Support</span>
+          </div>
+        </div>
+        <div class="solution-detail-right">
+          <div class="detail-tabs">
+            <div class="detail-tab active" onclick="switchTab(this, 'benefits-4')">Benefits</div>
+            <div class="detail-tab" onclick="switchTab(this, 'usecases-4')">Use Cases</div>
+            <div class="detail-tab" onclick="switchTab(this, 'impact-4')">Impact</div>
+          </div>
+          <div class="detail-panel active" id="benefits-4">
+            <ul class="detail-list">
+              <li>40–60% reduction in fuel and maintenance costs for converted fleets</li>
+              <li>Government incentive navigation and carbon credit monetization support</li>
+              <li>Fleet telematics and energy management integrated from day one</li>
+              <li>Phased conversion plans minimizing operational disruption</li>
+              <li>Driver training and change management programs included</li>
+            </ul>
+          </div>
+          <div class="detail-panel" id="usecases-4">
+            <ul class="detail-list">
+              <li>Last-mile delivery fleet electrification for e-commerce and retail</li>
+              <li>Bus rapid transit and urban mass transit electrification</li>
+              <li>Government and parastatal fleet conversion programs</li>
+              <li>Mining and industrial site light-vehicle electrification</li>
+            </ul>
+          </div>
+          <div class="detail-panel" id="impact-4">
+            <ul class="detail-list">
+              <li>100-vehicle fleet conversion eliminates 800+ tonnes CO₂ annually</li>
+              <li>Significant improvement in urban air quality around high-traffic routes</li>
+              <li>Creates replicable model for national fleet electrification policy</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-section">
+    <h2 class="cta-title">Find the Right<br><span>Solution</span> for Your Needs</h2>
+    <p class="cta-sub">Every deployment is tailored to your context, scale, and objectives.</p>
+    <div class="cta-actions">
+      <a href="#" onclick="showPage('contact'); return false;" class="btn-primary">Discuss Your Project</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== PROJECTS PAGE ===== -->
+<div class="page" id="page-projects">
+  <div class="about-hero">
+    <div class="about-hero-bg-text">Projects</div>
+    <div style="position:relative;z-index:2;">
+      <div class="page-label">
+        <div class="page-label-line"></div>
+        <span class="page-label-text">Projects & Initiatives</span>
+      </div>
+      <h1 class="page-title">Infrastructure<br>in Motion</h1>
+    </div>
+  </div>
+
+  <section class="projects-page">
+    <div class="section-inner">
+
+      <div class="project-full reveal">
+        <div class="project-full-header">
+          <div>
+            <div class="project-full-meta">
+              <span class="project-full-meta-item">Location: <span>Lagos, Nigeria</span></span>
+              <span class="project-full-meta-item">Sector: <span>Urban EV Infrastructure</span></span>
+              <span class="project-full-meta-item">Scale: <span>200 Stations</span></span>
+            </div>
+            <div class="project-full-title">Lagos EV Charging Corridor</div>
+            <div class="project-full-subtitle">A comprehensive fast-charging network spanning the Lagos metropolitan area, connecting all major commercial districts, arterial highways, and transit hubs with renewable-powered EV infrastructure.</div>
+          </div>
+          <div class="project-full-status">
+            <div class="status-badge development">
+              <div class="status-badge-dot"></div>
+              In Development
+            </div>
+          </div>
+        </div>
+        <div class="project-full-body">
+          <div class="project-full-section">
+            <div class="project-section-label">Key Metrics</div>
+            <div class="project-kpis">
+              <div class="project-kpi-item"><span class="project-kpi-label">Charging Stations</span><span class="project-kpi-val">200</span></div>
+              <div class="project-kpi-item"><span class="project-kpi-label">Solar Capacity</span><span class="project-kpi-val">150 MW</span></div>
+              <div class="project-kpi-item"><span class="project-kpi-label">Daily EV Sessions</span><span class="project-kpi-val">40,000+</span></div>
+              <div class="project-kpi-item"><span class="project-kpi-label">CO₂ Avoided / Year</span><span class="project-kpi-val">240,000 T</span></div>
+              <div class="project-kpi-item"><span class="project-kpi-label">Investment Value</span><span class="project-kpi-val">$180M</span></div>
+            </div>
+          </div>
+          <div class="project-full-section">
+            <div class="project-section-label">Development Timeline</div>
+            <div class="project-timeline-bar">
+              <div class="project-phase">
+                <span class="phase-label">Feasibility</span>
+                <div class="phase-bar"><div class="phase-bar-fill" style="width:100%"></div></div>
+              </div>
+              <div class="project-phase">
+                <span class="phase-label">Permitting</span>
+                <div class="phase-bar"><div class="phase-bar-fill" style="width:65%"></div></div>
+              </div>
+              <div class="project-phase">
+                <span class="phase-label">Financing</span>
+                <div class="phase-bar"><div class="phase-bar-fill" style="width:40%"></div></div>
+              </div>
+              <div class="project-phase">
+                <span class="phase-label">Construction</span>
+                <div class="phase-bar"><div class="phase-bar-fill" style="width:0%"></div></div>
+              </div>
+              <div class="project-phase">
+                <span class="phase-label">Operations</span>
+                <div class="phase-bar"><div class="phase-bar-fill" style="width:0%"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="project-full-section">
+            <div class="project-section-label">Community Impact</div>
+            <div class="detail-list" style="font-size:13px;color:var(--sage);">
+              <ul class="detail-list">
+                <li>12 million+ residents with improved air quality</li>
+                <li>800 direct construction and operations jobs</li>
+                <li>Municipal revenue sharing agreement</li>
+                <li>EV adoption incentive program for Lagos residents</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-full reveal reveal-delay-1">
+        <div class="project-full-header">
+          <div>
+            <div class="project-full-meta">
+              <span class="project-full-meta-item">Location: <span>Abuja, Nigeria</span></span>
+              <span class="project-full-meta-item">Sector: <span>Smart Mobility Hub</span></span>
+              <span class="project-full-meta-item">Scale: <span>Flagship Hub</span></span>
+            </div>
+            <div class="project-full-title">Abuja Smart Mobility Hub</div>
+            <div class="project-full-subtitle">A world-class integrated mobility facility serving as Africa's first purpose-built EV and clean transport hub — combining charging, battery swapping, public transit, retail, and logistics in a single landmark development.</div>
+          </div>
+          <div class="project-full-status">
+            <div class="status-badge planning">
+              <div class="status-badge-dot"></div>
+              Planning Phase
+            </div>
+          </div>
+        </div>
+        <div class="project-full-body">
+          <div class="project-full-section">
+            <div class="project-section-label">Key Metrics</div>
+            <div class="project-kpis">
+              <div class="project-kpi-item"><span class="project-kpi-label">EV Charging Bays</span><span class="project-kpi-val">80</span></div>
+              <div class="project-kpi-item"><span class="project-kpi-label">Battery Swap Stations</span><span class="project-kpi-val">20</span></div>
+              <div class="project-kpi-item"><span class="project-kpi-label">Solar Array</span><span class="project-kpi-val">5 MW</span></div>
+              <div class="project-kpi-item"><span class="project-kpi-label">Total Site Area</span><span class="project-kpi-val">12,000 m²</span></div>
+              <div class="project-kpi-item"><span class="project-kpi-label">Investment Value</span><span class="project-kpi-val">$45M</span></div>
+            </div>
+          </div>
+          <div class="project-full-section">
+            <div class="project-section-label">Development Timeline</div>
+            <div class="project-timeline-bar">
+              <div class="project-phase">
+                <span class="phase-label">Feasibility</span>
+                <div class="phase-bar"><div class="phase-bar-fill" style="width:100%"></div></div>
+              </div>
+              <div class="project-phase">
+                <span class="phase-label">Design</span>
+                <div class="phase-bar"><div class="phase-bar-fill" style="width:80%"></div></div>
+              </div>
+              <div class="project-phase">
+                <span class="phase-label">Land & Permits</span>
+                <div class="phase-bar"><div class="phase-bar-fill" style="width:30%"></div></div>
+              </div>
+              <div class="project-phase">
+                <span class="phase-label">Financing</span>
+                <div class="phase-bar"><div class="phase-bar-fill" style="width:10%"></div></div>
+              </div>
+              <div class="project-phase">
+                <span class="phase-label">Construction</span>
+                <div class="phase-bar"><div class="phase-bar-fill" style="width:0%"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="project-full-section">
+            <div class="project-section-label">Features</div>
+            <ul class="detail-list">
+              <li>24/7 operations with on-site technical support</li>
+              <li>Integrated BRT bus charging berths</li>
+              <li>Smart parking management system</li>
+              <li>EV showroom and test-drive facility</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-full reveal reveal-delay-2">
+        <div class="project-full-header">
+          <div>
+            <div class="project-full-meta">
+              <span class="project-full-meta-item">Location: <span>East Africa</span></span>
+              <span class="project-full-meta-item">Sector: <span>Regional Network</span></span>
+              <span class="project-full-meta-item">Scale: <span>3 Countries</span></span>
+            </div>
+            <div class="project-full-title">East Africa Solar Charging Network</div>
+            <div class="project-full-subtitle">A cross-border solar-powered EV charging corridor spanning Kenya, Tanzania, and Uganda — enabling clean logistics, supporting public bus electrification, and building the first multi-country EV infrastructure network in Africa.</div>
+          </div>
+          <div class="project-full-status">
+            <div class="status-badge active">
+              <div class="status-badge-dot"></div>
+              Concept Stage
+            </div>
+          </div>
+        </div>
+        <div class="project-full-body">
+          <div class="project-full-section">
+            <div class="project-section-label">Key Metrics</div>
+            <div class="project-kpis">
+              <div class="project-kpi-item"><span class="project-kpi-label">Countries</span><span class="project-kpi-val">3</span></div>
+              <div class="project-kpi-item"><span class="project-kpi-label">Charging Stations</span><span class="project-kpi-val">300+</span></div>
+              <div class="project-kpi-item"><span class="project-kpi-label">Corridor Length</span><span class="project-kpi-val">2,400 km</span></div>
+              <div class="project-kpi-item"><span class="project-kpi-label">Investment Target</span><span class="project-kpi-val">$220M</span></div>
+            </div>
+          </div>
+          <div class="project-full-section">
+            <div class="project-section-label">Development Timeline</div>
+            <div class="project-timeline-bar">
+              <div class="project-phase">
+                <span class="phase-label">Concept</span>
+                <div class="phase-bar"><div class="phase-bar-fill" style="width:90%"></div></div>
+              </div>
+              <div class="project-phase">
+                <span class="phase-label">Govt Dialogue</span>
+                <div class="phase-bar"><div class="phase-bar-fill" style="width:20%"></div></div>
+              </div>
+              <div class="project-phase">
+                <span class="phase-label">Feasibility</span>
+                <div class="phase-bar"><div class="phase-bar-fill" style="width:0%"></div></div>
+              </div>
+              <div class="project-phase">
+                <span class="phase-label">Development</span>
+                <div class="phase-bar"><div class="phase-bar-fill" style="width:0%"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="project-full-section">
+            <div class="project-section-label">Regional Impact</div>
+            <ul class="detail-list">
+              <li>Enables clean logistics across Mombasa–Nairobi–Kampala–Kigali axis</li>
+              <li>Supports East African Community EV policy objectives</li>
+              <li>Regional roaming network with unified payment platform</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+
+<!-- ===== SUSTAINABILITY PAGE ===== -->
+<div class="page" id="page-sustainability">
+  <div class="about-hero">
+    <div class="about-hero-bg-text">Impact</div>
+    <div style="position:relative;z-index:2;">
+      <div class="page-label">
+        <div class="page-label-line"></div>
+        <span class="page-label-text">Sustainability & ESG</span>
+      </div>
+      <h1 class="page-title">Clean Energy,<br>Real Impact</h1>
+    </div>
+  </div>
+
+  <section class="sustain-page">
+    <div class="section-inner">
+      <div class="sustain-grid">
+        <div class="sustain-card green reveal">
+          <div class="sustain-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="sustain-card-title">Carbon Reduction</div>
+          <div class="sustain-card-text">Every KineticGrid project is designed to maximize carbon avoidance. Our 2030 target: 5 million tonnes CO₂ avoided annually across our network. We report against GHG Protocol standards and align with Africa's NDCs.</div>
+        </div>
+        <div class="sustain-card blue reveal reveal-delay-1">
+          <div class="sustain-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="sustain-card-title">Renewable Energy</div>
+          <div class="sustain-card-text">Solar power is integrated into every deployment — not as a premium option, but as the default. We are building a clean energy company, not just a charging company. Our goal: 500MW renewable capacity by 2030.</div>
+        </div>
+        <div class="sustain-card amber reveal reveal-delay-2">
+          <div class="sustain-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="1.5"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="sustain-card-title">Community Development</div>
+          <div class="sustain-card-text">We create lasting value in every market: local employment, skills training, revenue sharing with municipalities, and energy access programs that extend clean power to underserved communities around our installations.</div>
+        </div>
+        <div class="sustain-card green reveal">
+          <div class="sustain-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18" stroke="currentColor" stroke-width="1.5"/></svg>
+          </div>
+          <div class="sustain-card-title">Sustainable Infrastructure</div>
+          <div class="sustain-card-text">Our infrastructure is engineered for 30-year lifespans using sustainable materials, circular design principles, and end-of-life recycling agreements for batteries and electrical components.</div>
+        </div>
+        <div class="sustain-card blue reveal reveal-delay-1">
+          <div class="sustain-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" stroke="currentColor" stroke-width="1.5"/></svg>
+          </div>
+          <div class="sustain-card-title">Green Mobility</div>
+          <div class="sustain-card-text">Beyond charging, we advocate for integrated urban mobility policies that prioritize walking, cycling, public transit, and clean vehicles — shaping the cities of tomorrow across the continent.</div>
+        </div>
+        <div class="sustain-card amber reveal reveal-delay-2">
+          <div class="sustain-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="sustain-card-title">ESG Reporting</div>
+          <div class="sustain-card-text">We publish annual sustainability reports aligned with GRI Standards, TCFD recommendations, and SASB framework — providing institutional investors with the transparency they require.</div>
+        </div>
+      </div>
+
+      <div class="sustain-impact reveal">
+        <div class="sustain-impact-title">2030 Impact Targets</div>
+        <div class="impact-metrics">
+          <div class="impact-metric">
+            <div class="impact-metric-num">5M</div>
+            <div class="impact-metric-desc">Tonnes CO₂ avoided annually by full network</div>
+          </div>
+          <div class="impact-metric">
+            <div class="impact-metric-num">500MW</div>
+            <div class="impact-metric-desc">Renewable energy capacity installed</div>
+          </div>
+          <div class="impact-metric">
+            <div class="impact-metric-num">10K</div>
+            <div class="impact-metric-desc">Direct and indirect jobs created</div>
+          </div>
+          <div class="impact-metric">
+            <div class="impact-metric-num">15+</div>
+            <div class="impact-metric-desc">African countries with KineticGrid infrastructure</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-section">
+    <h2 class="cta-title">Invest in<br><span>Impact at Scale</span></h2>
+    <p class="cta-sub">Partner with us to deliver measurable, auditable, lasting climate impact.</p>
+    <div class="cta-actions">
+      <a href="#" onclick="showPage('contact'); return false;" class="btn-primary">Discuss Impact Investment</a>
+      <a href="#" onclick="showPage('partnerships'); return false;" class="btn-secondary">Partnership Models</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== PARTNERSHIPS PAGE ===== -->
+<div class="page" id="page-partnerships">
+  <div class="about-hero">
+    <div class="about-hero-bg-text">Partners</div>
+    <div style="position:relative;z-index:2;">
+      <div class="page-label">
+        <div class="page-label-line"></div>
+        <span class="page-label-text">Partnerships</span>
+      </div>
+      <h1 class="page-title">Built on<br>Strategic Alliance</h1>
+    </div>
+  </div>
+
+  <section class="partnerships-page">
+    <div class="section-inner">
+      <p style="font-size:18px;line-height:1.75;color:var(--sage);max-width:680px;margin-bottom:64px;" class="reveal">KineticGrid Africa is a partnership-first organization. Our business model is designed around deep, long-term strategic alliances with the institutions, governments, and investors who share our vision for Africa's clean energy future.</p>
+
+      <div class="partner-model-grid">
+        <div class="partner-model reveal">
+          <div class="partner-model-header">
+            <div class="partner-model-icon">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M3 21h18M5 21V9l7-6 7 6v12M9 21v-6h6v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="partner-model-type">Government</div>
+          </div>
+          <div class="partner-model-name">Government & Public Sector</div>
+          <div class="partner-model-desc">We work with national governments, municipalities, and public agencies to develop EV policy frameworks, secure concession agreements, and deploy publicly funded charging infrastructure.</div>
+          <div class="partner-model-benefits">
+            <div class="partner-benefit">Policy development and EV infrastructure masterplanning</div>
+            <div class="partner-benefit">PPP structuring for national charging network programs</div>
+            <div class="partner-benefit">Government fleet electrification programs</div>
+            <div class="partner-benefit">Municipal revenue-generating charging infrastructure</div>
+            <div class="partner-benefit">Climate finance facilitation and NDC alignment</div>
+          </div>
+        </div>
+        <div class="partner-model reveal reveal-delay-1">
+          <div class="partner-model-header">
+            <div class="partner-model-icon">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="partner-model-type">Investment</div>
+          </div>
+          <div class="partner-model-name">Investors & Development Finance</div>
+          <div class="partner-model-desc">We offer compelling risk-adjusted returns in the fastest-growing clean infrastructure market globally — with structured investment opportunities ranging from project-level equity to portfolio-level debt facilities.</div>
+          <div class="partner-model-benefits">
+            <div class="partner-benefit">Project equity with long-term infrastructure returns</div>
+            <div class="partner-benefit">Green bond and climate finance instruments</div>
+            <div class="partner-benefit">Development finance institution co-investment</div>
+            <div class="partner-benefit">Blended finance structures for risk mitigation</div>
+            <div class="partner-benefit">Impact investment with measurable ESG reporting</div>
+          </div>
+        </div>
+        <div class="partner-model reveal">
+          <div class="partner-model-header">
+            <div class="partner-model-icon">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+            <div class="partner-model-type">Technology</div>
+          </div>
+          <div class="partner-model-name">Technology & OEM Partners</div>
+          <div class="partner-model-desc">We partner with EV manufacturers, charging technology providers, energy management software companies, and grid technology firms to deploy the best available solutions for African conditions.</div>
+          <div class="partner-model-benefits">
+            <div class="partner-benefit">Preferred supply agreements for charging hardware</div>
+            <div class="partner-benefit">Technology localization and Africa-specific adaptation</div>
+            <div class="partner-benefit">Software integration and API partnerships</div>
+            <div class="partner-benefit">Joint R&D for Africa-optimized EV solutions</div>
+          </div>
+        </div>
+        <div class="partner-model reveal reveal-delay-1">
+          <div class="partner-model-header">
+            <div class="partner-model-icon">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="1" y="8" width="22" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 8V6a7 7 0 0114 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="partner-model-type">Commercial</div>
+          </div>
+          <div class="partner-model-name">Fleet Operators & Logistics</div>
+          <div class="partner-model-desc">We build long-term partnerships with logistics companies, transit operators, and commercial fleet managers — delivering complete fleet electrification programs with guaranteed infrastructure support.</div>
+          <div class="partner-model-benefits">
+            <div class="partner-benefit">Dedicated depot charging infrastructure design and build</div>
+            <div class="partner-benefit">Fleet vehicle procurement and financing facilitation</div>
+            <div class="partner-benefit">Long-term charging services agreement with SLA</div>
+            <div class="partner-benefit">Fleet analytics and energy optimization platform</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--forest);border:1px solid var(--border);padding:60px;text-align:center;" class="reveal">
+        <h2 style="font-family:'Syne',sans-serif;font-size:32px;font-weight:700;letter-spacing:-0.02em;color:var(--white);margin-bottom:16px;line-height:1.15;">Ready to Explore a Partnership?</h2>
+        <p style="font-size:15px;color:var(--sage);margin-bottom:32px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.7;">Whether you are a government agency, development finance institution, technology provider, or fleet operator — we want to hear from you.</p>
+        <a href="#" onclick="showPage('contact'); return false;" class="btn-primary">Begin the Conversation</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ===== NEWS PAGE ===== -->
+<div class="page" id="page-news">
+  <div class="about-hero">
+    <div class="about-hero-bg-text">Insights</div>
+    <div style="position:relative;z-index:2;">
+      <div class="page-label">
+        <div class="page-label-line"></div>
+        <span class="page-label-text">News & Insights</span>
+      </div>
+      <h1 class="page-title">Perspectives on<br>Africa's Clean Future</h1>
+    </div>
+  </div>
+
+  <section class="news-page">
+    <div class="section-inner">
+      <div class="news-cats">
+        <div class="news-cat active">All</div>
+        <div class="news-cat">EV Industry</div>
+        <div class="news-cat">Clean Energy</div>
+        <div class="news-cat">Mobility</div>
+        <div class="news-cat">Infrastructure</div>
+        <div class="news-cat">Sustainability</div>
+        <div class="news-cat">Company News</div>
+      </div>
+
+      <div class="news-featured">
+        <a href="#" class="news-article main">
+          <div class="news-meta">
+            <span class="news-cat-tag">Infrastructure</span>
+            <span class="news-date">May 2025</span>
+          </div>
+          <div class="news-title">Why Africa's EV Infrastructure Moment is Now — Not in 2030</div>
+          <div class="news-excerpt">The window for establishing leadership in African EV infrastructure is narrowing. The countries and companies that move decisively in the next 24 months will define the continent's clean mobility landscape for decades. Here's why the timing is critical.</div>
+        </a>
+        <a href="#" class="news-article">
+          <div class="news-meta">
+            <span class="news-cat-tag">Company News</span>
+            <span class="news-date">April 2025</span>
+          </div>
+          <div class="news-title">KineticGrid Africa Announces Lagos Corridor Feasibility Study</div>
+          <div class="news-excerpt">We are proud to announce the launch of a comprehensive feasibility study for the Lagos EV Charging Corridor — a 200-station network spanning the metropolitan area.</div>
+        </a>
+      </div>
+
+      <div class="news-grid" style="margin-top:2px;">
+        <div class="news-grid-article">
+          <div class="news-meta">
+            <span class="news-cat-tag">Clean Energy</span>
+            <span class="news-date">March 2025</span>
+          </div>
+          <div class="news-title">Solar-Powered Charging: Africa's Competitive Advantage in Global EV Transition</div>
+          <div class="news-excerpt" style="margin-top:10px;font-size:13px;color:var(--muted);line-height:1.6;">While Europe and North America depend on grid electricity to power EVs, Africa has the opportunity to charge every vehicle with sunlight. This is not just an environmental win — it is an economic one.</div>
+        </div>
+        <div class="news-grid-article">
+          <div class="news-meta">
+            <span class="news-cat-tag">Mobility</span>
+            <span class="news-date">February 2025</span>
+          </div>
+          <div class="news-title">Fleet Electrification: The Fastest Path to Mass EV Adoption in African Cities</div>
+          <div class="news-excerpt" style="margin-top:10px;font-size:13px;color:var(--muted);line-height:1.6;">Commercial fleets — not private consumers — will drive the first wave of EV adoption in Africa. Here's why fleet electrification is the strategic entry point for the continent's clean transport transition.</div>
+        </div>
+        <div class="news-grid-article">
+          <div class="news-meta">
+            <span class="news-cat-tag">EV Industry</span>
+            <span class="news-date">January 2025</span>
+          </div>
+          <div class="news-title">The $100B Question: Where Should Africa's Climate Finance Go?</div>
+          <div class="news-excerpt" style="margin-top:10px;font-size:13px;color:var(--muted);line-height:1.6;">With over $100 billion in climate finance directed toward Africa annually, the infrastructure choices made today will shape the continent's energy and mobility landscape for generations.</div>
+        </div>
+        <div class="news-grid-article">
+          <div class="news-meta">
+            <span class="news-cat-tag">Sustainability</span>
+            <span class="news-date">December 2024</span>
+          </div>
+          <div class="news-title">Beyond Carbon Credits: Building Real Sustainability Infrastructure in Africa</div>
+          <div class="news-excerpt" style="margin-top:10px;font-size:13px;color:var(--muted);line-height:1.6;">The most impactful climate investments in Africa are not carbon offset schemes — they are physical infrastructure programs that change what is possible for African communities and economies.</div>
+        </div>
+        <div class="news-grid-article">
+          <div class="news-meta">
+            <span class="news-cat-tag">Infrastructure</span>
+            <span class="news-date">November 2024</span>
+          </div>
+          <div class="news-title">How Battery Swapping Could Solve Africa's EV Range Anxiety Problem</div>
+          <div class="news-excerpt" style="margin-top:10px;font-size:13px;color:var(--muted);line-height:1.6;">Battery swapping — a technology pioneered in Asia — may be the solution to Africa's unique EV adoption challenges: long distances, grid unreliability, and the need for rapid refueling in commercial operations.</div>
+        </div>
+        <div class="news-grid-article">
+          <div class="news-meta">
+            <span class="news-cat-tag">Company News</span>
+            <span class="news-date">October 2024</span>
+          </div>
+          <div class="news-title">KineticGrid Africa: The Company, the Mission, and the Moment</div>
+          <div class="news-excerpt" style="margin-top:10px;font-size:13px;color:var(--muted);line-height:1.6;">A founding statement from the leadership of KineticGrid Africa on why we exist, what we intend to build, and the scale of the opportunity we believe we are positioned to capture.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ===== CONTACT PAGE ===== -->
+<div class="page" id="page-contact">
+  <div class="about-hero">
+    <div class="about-hero-bg-text">Contact</div>
+    <div style="position:relative;z-index:2;">
+      <div class="page-label">
+        <div class="page-label-line"></div>
+        <span class="page-label-text">Get in Touch</span>
+      </div>
+      <h1 class="page-title">Let's Build<br>Something Together</h1>
+    </div>
+  </div>
+
+  <section class="contact-page">
+    <div class="section-inner">
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <div class="contact-info-title">Start a Conversation</div>
+          <div class="contact-info-text">Whether you are a government agency, development finance institution, technology partner, fleet operator, or investor — we want to hear from you. Every significant infrastructure project begins with a conversation.</div>
+          <div class="contact-details">
+            <div class="contact-detail">
+              <div class="contact-detail-icon">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2z" stroke="currentColor" stroke-width="1.5"/><path d="M22 6l-10 7L2 6" stroke="currentColor" stroke-width="1.5"/></svg>
+              </div>
+              <div>
+                <div class="contact-detail-label">Email</div>
+                <div class="contact-detail-val">kineticgridafrica@gmail.com</div>
+              </div>
+            </div>
+            <div class="contact-detail">
+              <div class="contact-detail-icon">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.7A2 2 0 012.18 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z" stroke="currentColor" stroke-width="1.5"/></svg>
+              </div>
+              <div>
+                <div class="contact-detail-label">Phone</div>
+                <div class="contact-detail-val">+234 813 158 5019</div>
+              </div>
+            </div>
+            <div class="contact-detail">
+              <div class="contact-detail-icon">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
+              </div>
+              <div>
+                <div class="contact-detail-label">Headquarters</div>
+                <div class="contact-detail-val">Lagos & Abuja, Nigeria<br>West Africa</div>
+              </div>
+            </div>
+          </div>
+          <div class="contact-map-placeholder">
+            <div class="map-pin"></div>
+            <div class="map-label">Nigeria, West Africa</div>
+          </div>
+        </div>
+
+        <div class="contact-form reveal reveal-delay-2">
+          <div class="form-title">Send Us a Message</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">First Name</label>
+              <input type="text" class="form-input" placeholder="John">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name</label>
+              <input type="text" class="form-input" placeholder="Smith">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Organization</label>
+            <input type="text" class="form-input" placeholder="Company / Institution / Agency">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input type="email" class="form-input" placeholder="john@organization.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              <input type="tel" class="form-input" placeholder="+234 000 000 0000">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Type of Inquiry</label>
+            <select class="form-select">
+              <option value="">Select inquiry type</option>
+              <option>Partnership Inquiry</option>
+              <option>Investment Discussion</option>
+              <option>Government / Policy</option>
+              <option>Fleet Electrification</option>
+              <option>Technology Partnership</option>
+              <option>Media Inquiry</option>
+              <option>General Inquiry</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Country / Region</label>
+            <input type="text" class="form-input" placeholder="Your country or region">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Message</label>
+            <textarea class="form-textarea" placeholder="Tell us about your project, organization, or inquiry — the more context you provide, the more productive our first conversation will be."></textarea>
+          </div>
+          <button class="form-submit" onclick="handleFormSubmit(this)">
+            Send Message
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- Footer -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" onclick="showPage('home'); return false;" class="nav-logo" style="text-decoration:none;">
+        <div class="logo-mark">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="18,2 34,10 34,26 18,34 2,26 2,10" fill="none" stroke="#3dff7e" stroke-width="1.5"/>
+            <polygon points="18,8 28,13 28,23 18,28 8,23 8,13" fill="none" stroke="#3dff7e" stroke-width="0.75" opacity="0.4"/>
+            <path d="M12 18 L16 14 L20 18 L24 14" stroke="#3dff7e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <circle cx="18" cy="18" r="2.5" fill="#3dff7e"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          KineticGrid Africa
+          <span>Clean Energy & Mobility</span>
+        </div>
+      </a>
+      <p class="footer-brand-desc">Building Africa's clean energy and sustainable mobility infrastructure. One charging station, one city, one country at a time.</p>
+      <div class="footer-socials">
+        <a href="#" class="footer-social">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 100-4 2 2 0 000 4z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#" class="footer-social">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#" class="footer-social">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zM17.5 6.5h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a href="#" onclick="showPage('about'); return false;">About Us</a></li>
+        <li><a href="#" onclick="showPage('about'); return false;">Our Mission</a></li>
+        <li><a href="#" onclick="showPage('sustainability'); return false;">Sustainability</a></li>
+        <li><a href="#" onclick="showPage('news'); return false;">News & Insights</a></li>
+        <li><a href="#" onclick="showPage('contact'); return false;">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Solutions</div>
+      <ul class="footer-links">
+        <li><a href="#" onclick="showPage('solutions'); return false;">EV Infrastructure</a></li>
+        <li><a href="#" onclick="showPage('solutions'); return false;">Charging Networks</a></li>
+        <li><a href="#" onclick="showPage('solutions'); return false;">Renewable Energy</a></li>
+        <li><a href="#" onclick="showPage('solutions'); return false;">Fleet Electrification</a></li>
+        <li><a href="#" onclick="showPage('solutions'); return false;">Mobility Hubs</a></li>
+        <li><a href="#" onclick="showPage('solutions'); return false;">Technical Services</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Work With Us</div>
+      <ul class="footer-links">
+        <li><a href="#" onclick="showPage('partnerships'); return false;">Government Partners</a></li>
+        <li><a href="#" onclick="showPage('partnerships'); return false;">Investors</a></li>
+        <li><a href="#" onclick="showPage('partnerships'); return false;">Development Agencies</a></li>
+        <li><a href="#" onclick="showPage('partnerships'); return false;">Technology Partners</a></li>
+        <li><a href="#" onclick="showPage('partnerships'); return false;">Fleet Operators</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 KineticGrid Africa Ltd. All rights reserved.</div>
+    <ul class="footer-legal">
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Terms of Use</a></li>
+      <li><a href="#">ESG Report</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0;
+  let ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+  });
+
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.12;
+    ringY += (mouseY - ringY) * 0.12;
+    cursorRing.style.left = ringX + 'px';
+    cursorRing.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, .solution-card, .partner-type, .project-card, .news-cat, .news-article').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '20px';
+      cursor.style.height = '20px';
+      cursorRing.style.width = '60px';
+      cursorRing.style.height = '60px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '10px';
+      cursor.style.height = '10px';
+      cursorRing.style.width = '40px';
+      cursorRing.style.height = '40px';
+    });
+  });
+
+  // Navbar scroll
+  window.addEventListener('scroll', () => {
+    const navbar = document.getElementById('navbar');
+    if (window.scrollY > 60) navbar.classList.add('scrolled');
+    else navbar.classList.remove('scrolled');
+  });
+
+  // Page navigation
+  function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + pageId).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Re-trigger animations for the new page
+    setTimeout(() => {
+      observeElements();
+      startCounters();
+    }, 100);
+  }
+
+  // Tab switching for solutions
+  function switchTab(tabEl, panelId) {
+    const parent = tabEl.closest('.solution-detail-right');
+    parent.querySelectorAll('.detail-tab').forEach(t => t.classList.remove('active'));
+    parent.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('active'));
+    tabEl.classList.add('active');
+    document.getElementById(panelId).classList.add('active');
+  }
+
+  // Intersection Observer for reveal animations
+  function observeElements() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal, .why-card, .timeline-item').forEach(el => {
+      observer.observe(el);
+    });
+  }
+
+  // Counter animation
+  function animateCounter(el) {
+    const target = parseFloat(el.getAttribute('data-target'));
+    const isDecimal = target % 1 !== 0;
+    const duration = 2000;
+    const start = performance.now();
+    
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = target * eased;
+      el.textContent = isDecimal ? current.toFixed(1) : Math.floor(current);
+      if (progress < 1) requestAnimationFrame(update);
+      else el.textContent = isDecimal ? target.toFixed(1) : target;
+    }
+    requestAnimationFrame(update);
+  }
+
+  function startCounters() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+          entry.target.classList.add('counted');
+          animateCounter(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.counter').forEach(el => observer.observe(el));
+  }
+
+  // Form submit
+  function handleFormSubmit(btn) {
+    btn.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Message Sent — We'll Be in Touch
+    `;
+    btn.style.background = 'var(--charge-dim)';
+    btn.disabled = true;
+  }
+
+  // Mobile menu
+  function toggleMobileMenu() {
+    // Simple implementation — in production would slide in a drawer
+    const links = document.querySelector('.nav-links');
+    if (links.style.display === 'flex') {
+      links.style.display = 'none';
+    } else {
+      links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:70px;left:0;right:0;background:rgba(10,15,13,0.97);padding:24px 32px;gap:20px;z-index:99;backdrop-filter:blur(20px);border-bottom:1px solid rgba(61,255,126,0.1);';
+    }
+  }
+
+  // Init
+  observeElements();
+  startCounters();
+
+  // News cat filter (UI only)
+  document.querySelectorAll('.news-cat').forEach(cat => {
+    cat.addEventListener('click', function() {
+      document.querySelectorAll('.news-cat').forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

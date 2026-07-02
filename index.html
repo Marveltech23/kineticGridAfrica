@@ -182,7 +182,7 @@
       linear-gradient(160deg, #0a1a10 0%, #060e08 40%, #0a0f0d 100%);
   }
 
-  /* Hero real photo background */
+  /* Hero real photo background layer */
   .hero-photo-bg {
     position: absolute;
     inset: 0;
@@ -498,7 +498,7 @@
   /* INSERT IMAGE PATH: WhatsApp_Image_2026-06-04_at_2_16_22_PM__4_.jpeg */
   .about-visual-photo {
     width: 100%;
-    height: 260px;
+    height: 340px;
     object-fit: cover;
     object-position: center;
     display: block;
@@ -552,7 +552,7 @@
     line-height: 1.5;
   }
 
-  /* Solutions grid */
+  /* Core Solutions */
   .solutions {
     padding: 100px 0;
     background: var(--forest);
@@ -656,7 +656,7 @@
   /* INSERT IMAGE PATH: WhatsApp_Image_2026-06-04_at_2_16_23_PM__3_.jpeg */
   .why-photo {
     width: 100%;
-    height: 220px;
+    height: 300px;
     object-fit: cover;
     object-position: center;
     display: block;
@@ -1238,7 +1238,7 @@
   /* INSERT IMAGE PATH: WhatsApp_Image_2026-06-04_at_2_16_22_PM__5_.jpeg */
   .project-full-image {
     width: 100%;
-    height: 280px;
+    height: 380px;
     object-fit: cover;
     object-position: center;
     display: block;
@@ -1316,7 +1316,7 @@
   /* INSERT IMAGE PATH: WhatsApp_Image_2026-06-04_at_2_16_23_PM__2_.jpeg */
   .sustain-photo-banner {
     width: 100%;
-    height: 340px;
+    height: 440px;
     object-fit: cover;
     object-position: center 30%;
     display: block;
@@ -1851,7 +1851,7 @@
     .about-snap-grid { grid-template-columns: 1fr; gap: 48px; }
     .why-africa-layout { grid-template-columns: 1fr; }
     .why-sticky { position: relative; top: 0; }
-    .why-photo { height: 180px; }
+    .why-photo { height: 240px; }
     .projects-grid { grid-template-columns: 1fr; }
     .project-card.featured { grid-row: span 1; }
     .partner-types { grid-template-columns: repeat(3, 1fr); }
@@ -1870,8 +1870,8 @@
     .project-full-body { grid-template-columns: 1fr; }
     .project-full-section { border-right: none; border-bottom: 1px solid var(--border-dim); }
     .cta-section { padding: 80px 32px; }
-    .project-full-image { height: 200px; }
-    .sustain-photo-banner { height: 220px; }
+    .project-full-image { height: 260px; }
+    .sustain-photo-banner { height: 300px; }
   }
 
   @media (max-width: 640px) {
@@ -1888,13 +1888,137 @@
     .footer-top { grid-template-columns: 1fr; }
     .hero-actions { flex-direction: column; align-items: flex-start; }
     .values-grid { grid-template-columns: 1fr; }
-    .project-full-image { height: 160px; }
-    .about-visual-photo { height: 180px; }
-    .sustain-photo-banner { height: 160px; }
+    .project-full-image { height: 210px; }
+    .about-visual-photo { height: 230px; }
+    .sustain-photo-banner { height: 220px; }
   }
 
   /* Scroll-triggered number counters */
   .counter { display: inline-block; }
+
+  /* ===== ADDED: New image placeholders (12) — inherits existing photo styling language ===== */
+  .img-placeholder {
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    filter: saturate(0.6) brightness(0.68);
+    border: 1px solid var(--border);
+  }
+  .img-placeholder-banner { height: 320px; margin-bottom: 64px; }
+  .img-placeholder-card { height: 240px; margin-bottom: 32px; }
+  .img-placeholder-inline { height: 220px; margin: 32px 0; }
+  .img-placeholder-side { height: 260px; margin-top: 32px; }
+
+  @media (max-width: 1024px) {
+    .img-placeholder-banner { height: 220px; margin-bottom: 40px; }
+    .img-placeholder-card { height: 180px; margin-bottom: 24px; }
+    .img-placeholder-inline { height: 180px; margin: 24px 0; }
+    .img-placeholder-side { height: 200px; margin-top: 24px; }
+  }
+  @media (max-width: 640px) {
+    .img-placeholder-banner { height: 170px; margin-bottom: 32px; }
+    .img-placeholder-card { height: 150px; margin-bottom: 20px; }
+    .img-placeholder-inline { height: 150px; margin: 20px 0; }
+    .img-placeholder-side { height: 160px; margin-top: 20px; }
+  }
+
+  /* ===== ADDED: Blog "See More" expand/collapse (Task 5) ===== */
+  .blog-card { display: flex; flex-direction: column; }
+  .blog-full-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s ease, opacity 0.4s ease, margin 0.5s ease;
+  }
+  .blog-full-content p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--sage);
+    margin-top: 14px;
+  }
+  .blog-card.expanded .blog-full-content {
+    max-height: 600px;
+    opacity: 1;
+  }
+  .blog-see-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 18px;
+    background: transparent;
+    border: none;
+    color: var(--charge);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: none;
+    padding: 0;
+    transition: gap 0.2s;
+  }
+  .blog-see-more:hover { gap: 10px; }
+  .blog-see-more svg { transition: transform 0.3s ease; }
+  .blog-card.expanded .blog-see-more svg { transform: rotate(180deg); }
+
+  /* ===== ADDED: Increase visibility of real photography (Task 2) ===== */
+  .hero-photo-bg img { opacity: 0.34; filter: saturate(0.55) brightness(0.78); }
+  .about-visual-photo { filter: saturate(0.9) brightness(0.92); height: 380px; }
+  .why-photo { filter: saturate(0.85) brightness(0.85); height: 340px; }
+  .project-full-image { filter: saturate(0.85) brightness(0.88); height: 420px; }
+  .sustain-photo-banner { filter: saturate(0.75) brightness(0.78); height: 480px; }
+  .img-placeholder { filter: saturate(0.85) brightness(0.85); }
+
+  @media (max-width: 1024px) {
+    .about-visual-photo { height: 260px; }
+    .why-photo { height: 260px; }
+  }
+  @media (max-width: 640px) {
+    .about-visual-photo { height: 240px; }
+    .why-photo { height: 220px; }
+  }
+
+  /* ===== ADDED: Hero secondary image card — major hero visual element (Task 1) ===== */
+  .hero-image-card {
+    position: absolute;
+    right: 6%;
+    bottom: 190px;
+    width: 300px;
+    height: 200px;
+    z-index: 2;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.45);
+  }
+  .hero-image-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: saturate(0.85) brightness(0.9);
+    display: block;
+  }
+  .hero-image-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10,15,13,0.5), transparent 50%);
+  }
+  .hero-image-card-label {
+    position: absolute;
+    left: 16px; bottom: 14px;
+    z-index: 2;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  @media (max-width: 1024px) {
+    .hero-image-card { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -1994,6 +2118,12 @@
       </svg>
     </div>
 
+    <!-- IMAGE PLACEHOLDER 00 — secondary hero visual, floating card style -->
+    <div class="hero-image-card">
+      <img src="images/WhatsApp Image 2026-06-04 at 2.16.22 PM (3).jpeg" alt="KineticGrid Africa solar EV charging infrastructure">
+      <span class="hero-image-card-label">Lagos Charging Corridor</span>
+    </div>
+
     <div class="hero-content">
       <div class="hero-eyebrow">
         <div class="hero-eyebrow-line"></div>
@@ -2060,7 +2190,8 @@
           <div class="about-visual-box">
             <!-- Solar-powered buses charging under canopy image -->
             <!-- INSERT IMAGE PATH: WhatsApp_Image_2026-06-04_at_2_16_22_PM__4_.jpeg -->
-            <img src="images/WhatsApp Image 2026-06-04 at 2.16.22 PM (4).jpeg" alt="Electric buses charging under solar canopy" class="about-visual-photo">
+            <img src="images/WhatsApp Image 2026-06-04 at 2.16.22 PM (4).jpeg"
+             alt="Electric buses charging under solar canopy" class="about-visual-photo">
             <div class="about-pillars">
               <div class="pillar">
                 <div class="pillar-icon">
@@ -2112,6 +2243,8 @@
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
+      <!-- IMAGE PLACEHOLDER 01 -->
+      <img src="images/WhatsApp Image 2026-06-04 at 2.16.22 PM (5).jpeg" alt="EV charging infrastructure overview" class="img-placeholder img-placeholder-banner">
       <div class="solutions-grid">
         <a href="#" onclick="showPage('solutions'); return false;" class="solution-card">
           <div class="sol-number">01</div>
@@ -2228,6 +2361,8 @@
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
+      <!-- IMAGE PLACEHOLDER 02 -->
+      <img src="images/chris-liverani-HUJDz6CJEaM-unsplash.jpg" alt="Infrastructure programs in development" class="img-placeholder img-placeholder-banner">
       <div class="projects-grid">
         <div class="project-card featured reveal">
           <div class="project-tag">
@@ -2312,6 +2447,8 @@
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
+      <!-- IMAGE PLACEHOLDER 03 -->
+      <img src="images/placeholder-03-partnership-ecosystem.jpg" alt="Strategic partnership ecosystem" class="img-placeholder img-placeholder-card">
       <div class="partner-types">
         <div class="partner-type">
           <div class="partner-type-icon">
@@ -2336,7 +2473,7 @@
         </div>
         <div class="partner-type">
           <div class="partner-type-icon">
-            <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" stroke="currentColor" stroke-width="1.5"/></svg>
+            <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zM17.5 6.5h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           </div>
           <div class="partner-type-name">Technology Partners</div>
           <div class="partner-type-text">OEMs, software, grid & energy tech</div>
@@ -2415,6 +2552,8 @@
               <p>Our founders recognized that the transition to clean transportation was not just an environmental responsibility — it was an <strong>economic imperative and a generational opportunity</strong>. The continent that holds some of the world's greatest renewable energy reserves was preparing to import millions of combustion-engine vehicles from aging industrial economies.</p>
               <p>That paradox is what KineticGrid Africa was created to resolve. We exist to ensure that Africa's mobility future is designed on African terms — leveraging African sunlight, serving African cities, creating African jobs, and building African institutional capability in clean energy infrastructure.</p>
             </div>
+            <!-- IMAGE PLACEHOLDER 04 -->
+            <img src="images/placeholder-04-founding-team.jpg" alt="KineticGrid Africa founding team and early infrastructure work" class="img-placeholder img-placeholder-inline">
           </div>
           <div class="story-block" id="vision-mission">
             <div class="story-block-label">Vision & Mission</div>
@@ -2476,6 +2615,8 @@
         <span class="section-eyebrow-text">Future Roadmap</span>
       </div>
       <h2 class="section-title" style="margin-bottom:0;">The Road Ahead</h2>
+      <!-- IMAGE PLACEHOLDER 05 -->
+      <img src="images/placeholder-05-roadmap.jpg" alt="KineticGrid Africa future infrastructure roadmap" class="img-placeholder img-placeholder-banner" style="margin-top:48px;">
       <div class="timeline">
         <div class="timeline-item">
           <div class="timeline-dot"></div>
@@ -2548,6 +2689,8 @@
             <span class="solution-tag">Highway Corridors</span>
             <span class="solution-tag">Urban Networks</span>
           </div>
+          <!-- IMAGE PLACEHOLDER 06 -->
+          <img src="images/placeholder-06-infrastructure-site.jpg" alt="EV infrastructure development site" class="img-placeholder img-placeholder-side">
         </div>
         <div class="solution-detail-right">
           <div class="detail-tabs">
@@ -2641,6 +2784,8 @@
             <span class="solution-tag">Microgrids</span>
             <span class="solution-tag">Off-Grid</span>
           </div>
+          <!-- IMAGE PLACEHOLDER 07 -->
+          <img src="images/placeholder-07-renewable-energy.jpg" alt="Solar renewable energy integration for EV charging" class="img-placeholder img-placeholder-side">
         </div>
         <div class="solution-detail-right">
           <div class="detail-tabs">
@@ -2768,7 +2913,7 @@
         </div>
         <!-- Bus charging station image — illustrates the scale of planned infrastructure -->
         <!-- INSERT IMAGE PATH: WhatsApp_Image_2026-06-04_at_2_16_22_PM__5_.jpeg -->
-        <img src="images/WhatsApp Image 2026-06-04 at 2.16.22 PM (5).jpeg" alt="EV charging stations with solar canopy infrastructure" class="project-full-image">
+        <img src="images/WhatsApp Image 2026-06-04 at 2.16.22 PM (5).jpeg" alt="EV charging stations with solar canopy infrastructure" class="project-full-image">
         <div class="project-full-body">
           <div class="project-full-section">
             <div class="project-section-label">Key Metrics</div>
@@ -2837,6 +2982,8 @@
             </div>
           </div>
         </div>
+        <!-- IMAGE PLACEHOLDER 08 -->
+        <img src="images/placeholder-08-abuja-hub-rendering.jpg" alt="Abuja Smart Mobility Hub concept rendering" class="img-placeholder img-placeholder-banner" style="margin-bottom:0;border-bottom:1px solid var(--border-dim);">
         <div class="project-full-body">
           <div class="project-full-section">
             <div class="project-section-label">Key Metrics</div>
@@ -2903,6 +3050,8 @@
             </div>
           </div>
         </div>
+        <!-- IMAGE PLACEHOLDER 09 -->
+        <img src="images/placeholder-09-east-africa-corridor.jpg" alt="East Africa Solar Charging Network corridor" class="img-placeholder img-placeholder-banner" style="margin-bottom:0;border-bottom:1px solid var(--border-dim);">
         <div class="project-full-body">
           <div class="project-full-section">
             <div class="project-section-label">Key Metrics</div>
@@ -2967,7 +3116,7 @@
     <div class="section-inner">
       <!-- Interior solar panel canopy image — the engineering reality behind clean charging -->
       <!-- INSERT IMAGE PATH: WhatsApp_Image_2026-06-04_at_2_16_23_PM__2_.jpeg -->
-      <img src="" alt="Interior view of solar panel canopy above EV charging bays" class="sustain-photo-banner">
+      <img src="images/WhatsApp Image 2026-06-04 at 2.16.23 PM (2).jpeg" alt="Interior view of solar panel canopy above EV charging bays" class="sustain-photo-banner">
 
       <div class="sustain-grid">
         <div class="sustain-card green reveal">
@@ -3016,6 +3165,8 @@
 
       <div class="sustain-impact reveal">
         <div class="sustain-impact-title">2030 Impact Targets</div>
+        <!-- IMAGE PLACEHOLDER 10 -->
+        <img src="images/placeholder-10-impact-visualization.jpg" alt="Sustainability impact visualization" class="img-placeholder img-placeholder-card" style="border-color:var(--border);">
         <div class="impact-metrics">
           <div class="impact-metric">
             <div class="impact-metric-num">5M</div>
@@ -3065,6 +3216,9 @@
   <section class="partnerships-page">
     <div class="section-inner">
       <p style="font-size:18px;line-height:1.75;color:var(--sage);max-width:680px;margin-bottom:64px;" class="reveal">KineticGrid Africa is a partnership-first organization. Our business model is designed around deep, long-term strategic alliances with the institutions, governments, and investors who share our vision for Africa's clean energy future.</p>
+
+      <!-- IMAGE PLACEHOLDER 11 -->
+      <img src="images/placeholder-11-partnership-collaboration.jpg" alt="KineticGrid Africa strategic partnership collaboration" class="img-placeholder img-placeholder-banner">
 
       <div class="partner-model-grid">
         <div class="partner-model reveal">
@@ -3190,53 +3344,95 @@
       </div>
 
       <div class="news-grid" style="margin-top:2px;">
-        <div class="news-grid-article">
+        <div class="news-grid-article blog-card">
           <div class="news-meta">
             <span class="news-cat-tag">Clean Energy</span>
             <span class="news-date">March 2025</span>
           </div>
           <div class="news-title">Solar-Powered Charging: Africa's Competitive Advantage in Global EV Transition</div>
           <div class="news-excerpt" style="margin-top:10px;font-size:13px;color:var(--muted);line-height:1.6;">While Europe and North America depend on grid electricity to power EVs, Africa has the opportunity to charge every vehicle with sunlight. This is not just an environmental win — it is an economic one.</div>
+          <div class="blog-full-content">
+            <p>Grid instability and frequent power cuts have always been core obstacles restricting the stable operation of public charging stations and bus fleets in West Africa. Solar carports equipped with battery storage can generate free clean power during the day, store energy for night charging, and protect vehicles from extreme tropical sunlight and rain erosion.</p>
+            <p>It is currently the most reliable, cost-effective, and sustainable infrastructure solution for African electric mobility projects — and it is why KineticGrid Africa builds solar generation and storage into every charging deployment as a default, not an add-on.</p>
+          </div>
+          <button class="blog-see-more" onclick="toggleBlogCard(this)">See More
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
         </div>
-        <div class="news-grid-article">
+        <div class="news-grid-article blog-card">
           <div class="news-meta">
             <span class="news-cat-tag">Mobility</span>
             <span class="news-date">February 2025</span>
           </div>
           <div class="news-title">Fleet Electrification: The Fastest Path to Mass EV Adoption in African Cities</div>
           <div class="news-excerpt" style="margin-top:10px;font-size:13px;color:var(--muted);line-height:1.6;">Commercial fleets — not private consumers — will drive the first wave of EV adoption in Africa. Here's why fleet electrification is the strategic entry point for the continent's clean transport transition.</div>
+          <div class="blog-full-content">
+            <p>Traditional diesel public buses bring high pollution, high noise, and continuously rising fuel operation costs. Zero-emission electric buses matched with on-site solar charging systems can reduce overall operational costs by more than 60% for municipal transit departments.</p>
+            <p>KineticGrid Africa provides a one-stop solution including vehicles, charging infrastructure, and solar energy systems, addressing the technical and financial barriers that have historically slowed government public transport renewal and upgrading.</p>
+          </div>
+          <button class="blog-see-more" onclick="toggleBlogCard(this)">See More
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
         </div>
-        <div class="news-grid-article">
+        <div class="news-grid-article blog-card">
           <div class="news-meta">
             <span class="news-cat-tag">EV Industry</span>
             <span class="news-date">January 2025</span>
           </div>
           <div class="news-title">The $100B Question: Where Should Africa's Climate Finance Go?</div>
           <div class="news-excerpt" style="margin-top:10px;font-size:13px;color:var(--muted);line-height:1.6;">With over $100 billion in climate finance directed toward Africa annually, the infrastructure choices made today will shape the continent's energy and mobility landscape for generations.</div>
+          <div class="blog-full-content">
+            <p>Global climate funds and impact investment institutions are continuously increasing their focus on Africa's clean transportation sector. Integrated solar, storage, and smart mobility hub projects fully meet international ESG investment standards.</p>
+            <p>Stable income from charging service fees and long-term government transit operation contracts can bring continuous cash flow and reliable long-term ROI for global green investors — making infrastructure, not offsets, the most durable climate investment on the continent.</p>
+          </div>
+          <button class="blog-see-more" onclick="toggleBlogCard(this)">See More
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
         </div>
-        <div class="news-grid-article">
+        <div class="news-grid-article blog-card">
           <div class="news-meta">
             <span class="news-cat-tag">Sustainability</span>
             <span class="news-date">December 2024</span>
           </div>
           <div class="news-title">Beyond Carbon Credits: Building Real Sustainability Infrastructure in Africa</div>
           <div class="news-excerpt" style="margin-top:10px;font-size:13px;color:var(--muted);line-height:1.6;">The most impactful climate investments in Africa are not carbon offset schemes — they are physical infrastructure programs that change what is possible for African communities and economies.</div>
+          <div class="blog-full-content">
+            <p>Africa holds 60% of the world's most abundant solar resources, yet less than 5% of urban transportation infrastructure currently uses clean energy. That resource gap is also the opportunity: physical solar, storage, and charging infrastructure creates verifiable, lasting impact in a way that offset certificates alone cannot.</p>
+            <p>Every KineticGrid Africa project generates local construction, operation, and maintenance jobs, transfers new energy technology and skills to local teams, and helps build the foundations of a domestic green industrial economy — impact that compounds over the decades-long life of the asset.</p>
+          </div>
+          <button class="blog-see-more" onclick="toggleBlogCard(this)">See More
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
         </div>
-        <div class="news-grid-article">
+        <div class="news-grid-article blog-card">
           <div class="news-meta">
             <span class="news-cat-tag">Infrastructure</span>
             <span class="news-date">November 2024</span>
           </div>
           <div class="news-title">How Battery Swapping Could Solve Africa's EV Range Anxiety Problem</div>
           <div class="news-excerpt" style="margin-top:10px;font-size:13px;color:var(--muted);line-height:1.6;">Battery swapping — a technology pioneered in Asia — may be the solution to Africa's unique EV adoption challenges: long distances, grid unreliability, and the need for rapid refueling in commercial operations.</div>
+          <div class="blog-full-content">
+            <p>For commercial fleets covering long inter-city routes, minutes matter. Battery swapping stations let a depleted pack be exchanged for a fully charged one in the time it takes to refuel a diesel vehicle — removing the downtime that slows conventional DC fast charging on high-utilization routes.</p>
+            <p>Paired with solar-and-storage charging hubs, swap stations also smooth demand on unreliable grids, since batteries can be topped up steadily throughout the day rather than in the short bursts that put the most strain on local power supply.</p>
+          </div>
+          <button class="blog-see-more" onclick="toggleBlogCard(this)">See More
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
         </div>
-        <div class="news-grid-article">
+        <div class="news-grid-article blog-card">
           <div class="news-meta">
             <span class="news-cat-tag">Company News</span>
             <span class="news-date">October 2024</span>
           </div>
           <div class="news-title">KineticGrid Africa: The Company, the Mission, and the Moment</div>
           <div class="news-excerpt" style="margin-top:10px;font-size:13px;color:var(--muted);line-height:1.6;">A founding statement from the leadership of KineticGrid Africa on why we exist, what we intend to build, and the scale of the opportunity we believe we are positioned to capture.</div>
+          <div class="blog-full-content">
+            <p>KineticGrid Africa is an integrated new energy infrastructure developer headquartered in Nigeria, serving the entire African market. We provide full-lifecycle, turnkey new energy mobility solutions for governments, public transit authorities, logistics fleet operators, and international climate investment funds across West Africa and East Africa.</p>
+            <p>Our core business covers solar carport and battery energy storage systems, public and fleet DC fast-charging networks, zero-emission electric bus fleets, new energy vehicle sales and maintenance, smart mobility hubs, and comprehensive fleet electrification transformation services — all designed to turn Africa's natural clean energy advantage into stable, affordable, low-carbon power for public and commercial mobility.</p>
+          </div>
+          <button class="blog-see-more" onclick="toggleBlogCard(this)">See More
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
         </div>
       </div>
     </div>
@@ -3296,6 +3492,8 @@
             <div class="map-pin"></div>
             <div class="map-label">Nigeria, West Africa</div>
           </div>
+          <!-- IMAGE PLACEHOLDER 12 -->
+          <img src="images/placeholder-12-hq-team.jpg" alt="KineticGrid Africa headquarters and team" class="img-placeholder img-placeholder-side">
         </div>
 
         <div class="contact-form reveal reveal-delay-2">
@@ -3496,6 +3694,17 @@
     document.getElementById(panelId).classList.add('active');
   }
 
+  // Blog "See More" expand/collapse
+  function toggleBlogCard(btnEl) {
+    const card = btnEl.closest('.blog-card');
+    card.classList.toggle('expanded');
+    if (card.classList.contains('expanded')) {
+      btnEl.innerHTML = 'See Less <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 10l4-4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    } else {
+      btnEl.innerHTML = 'See More <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    }
+  }
+
   // Intersection Observer for reveal animations
   function observeElements() {
     const observer = new IntersectionObserver((entries) => {
@@ -3577,4 +3786,3 @@
 </script>
 </body>
 </html>
-

@@ -385,6 +385,7 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
+    min-width: 0;
   }
   .stat-item:first-child { padding-left: 0; }
   .stat-item:last-child { border-right: none; }
@@ -757,6 +758,7 @@
   .project-metrics {
     display: flex;
     gap: 32px;
+    flex-wrap: wrap;
   }
   .project-metric {}
   .project-metric-val {
@@ -862,6 +864,7 @@
     justify-content: center;
     position: relative;
     z-index: 1;
+    flex-wrap: wrap;
   }
 
   /* ===== ABOUT PAGE ===== */
@@ -1129,6 +1132,7 @@
     gap: 0;
     margin-bottom: 28px;
     border-bottom: 1px solid var(--border-dim);
+    flex-wrap: wrap;
   }
   .detail-tab {
     font-size: 12px;
@@ -1228,6 +1232,7 @@
     text-transform: uppercase;
     padding: 6px 14px;
     border: 1px solid;
+    white-space: nowrap;
   }
   .status-badge.development { color: #ffd37a; border-color: rgba(255,211,122,0.3); }
   .status-badge.planning { color: var(--charge); border-color: rgba(61,255,126,0.3); }
@@ -1254,6 +1259,7 @@
   .project-full-section {
     padding: 36px 40px;
     border-right: 1px solid var(--border-dim);
+    min-width: 0;
   }
   .project-full-section:last-child { border-right: none; }
   .project-section-label {
@@ -1275,6 +1281,8 @@
     align-items: center;
     padding-bottom: 10px;
     border-bottom: 1px solid var(--border-dim);
+    gap: 12px;
+    flex-wrap: wrap;
   }
   .project-kpi-item:last-child { border-bottom: none; padding-bottom: 0; }
   .project-kpi-label { font-size: 12px; color: var(--muted); }
@@ -1429,6 +1437,8 @@
     align-items: flex-start;
     justify-content: space-between;
     margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
   }
   .partner-model-icon {
     width: 52px; height: 52px;
@@ -1446,6 +1456,8 @@
     color: var(--charge);
     border: 1px solid rgba(61,255,126,0.2);
     padding: 4px 10px;
+    white-space: nowrap;
+    height: fit-content;
   }
   .partner-model-name {
     font-family: 'Syne', sans-serif;
@@ -1500,6 +1512,7 @@
     padding: 8px 18px;
     cursor: none;
     transition: color 0.2s, border-color 0.2s, background 0.2s;
+    white-space: nowrap;
   }
   .news-cat.active,
   .news-cat:hover {
@@ -1528,6 +1541,7 @@
     gap: 16px;
     margin-bottom: 16px;
     align-items: center;
+    flex-wrap: wrap;
   }
   .news-cat-tag {
     font-size: 10px;
@@ -1626,6 +1640,7 @@
   .contact-detail-val {
     font-size: 14px;
     color: var(--white);
+    word-break: break-word;
   }
   .contact-map-placeholder {
     background: var(--forest);
@@ -1681,6 +1696,7 @@
   }
   .form-group {
     margin-bottom: 16px;
+    min-width: 0;
   }
   .form-label {
     display: block;
@@ -1730,6 +1746,7 @@
     justify-content: center;
     gap: 10px;
     margin-top: 24px;
+    text-align: center;
   }
   .form-submit:hover { background: var(--charge-dim); }
 
@@ -1794,6 +1811,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
   }
   .footer-copy {
     font-size: 12px;
@@ -1803,6 +1822,7 @@
     display: flex;
     gap: 24px;
     list-style: none;
+    flex-wrap: wrap;
   }
   .footer-legal a {
     font-size: 12px;
@@ -2019,6 +2039,235 @@
   @media (max-width: 1024px) {
     .hero-image-card { display: none; }
   }
+
+  /* ============================================================
+     ===== ADDED: Full-width overflow guard (applies at all sizes) =====
+     Prevents any element from forcing horizontal scroll, without
+     touching layout, colors, or desktop appearance.
+  ============================================================ */
+  html, body { max-width: 100%; overflow-x: hidden; }
+  img, svg { max-width: 100%; height: auto; }
+  .hero-visual, .hero-image-card img, .about-visual-photo, .why-photo,
+  .project-full-image, .sustain-photo-banner, .img-placeholder,
+  .hero-photo-bg img { height: auto; } /* height re-set below where fixed heights are required */
+  .hero-visual svg { width: 100%; height: 100%; }
+  .about-visual-photo, .why-photo, .project-full-image, .sustain-photo-banner,
+  .img-placeholder-banner, .img-placeholder-card, .img-placeholder-inline,
+  .img-placeholder-side, .hero-photo-bg img { width: 100%; }
+  /* restore intrinsic fixed-heights that the guard above reset (kept identical to originals) */
+  .about-visual-photo { height: 380px; }
+  .why-photo { height: 340px; }
+  .project-full-image { height: 420px; }
+  .sustain-photo-banner { height: 480px; }
+  .img-placeholder-banner { height: 320px; }
+  .img-placeholder-card { height: 240px; }
+  .img-placeholder-inline { height: 220px; }
+  .img-placeholder-side { height: 260px; }
+  .hero-photo-bg img { height: 100%; }
+
+  * { min-width: 0; }
+  .hero-content, .about-snap-body, .story-block-text, .sol-desc, .project-desc,
+  .why-card-text, .sustain-card-text, .value-item-text, .timeline-text,
+  .partner-model-desc, .partner-benefit, .news-excerpt, .detail-list li,
+  .contact-info-text, .footer-brand-desc { word-wrap: break-word; overflow-wrap: break-word; }
+
+  /* Tables/lists/etc that use flex with fixed gaps can overflow on very narrow phones */
+  .hero-eyebrow, .section-eyebrow, .page-label { flex-wrap: wrap; }
+
+  /* ============================================================
+     ===== ADDED: Tablet refinement (769px – 1024px) =====
+  ============================================================ */
+  @media (max-width: 1024px) and (min-width: 769px) {
+    .partner-types { grid-template-columns: repeat(3, 1fr); }
+    .impact-metrics { grid-template-columns: repeat(4, 1fr); }
+    .sustain-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* ============================================================
+     ===== ADDED: 768px and below — general phone/tablet tightening =====
+  ============================================================ */
+  @media (max-width: 768px) {
+    .hero { min-height: 92vh; }
+    .hero-headline { font-size: clamp(34px, 9vw, 44px); }
+    .hero-sub { font-size: 15px; margin-bottom: 36px; }
+    .hero-scroll { display: none; }
+    .stats-strip { padding: 20px 20px; gap: 20px 0; }
+    .stat-item { padding: 0 16px; }
+    .stat-number { font-size: 28px; }
+    .section-inner { padding: 0 20px; }
+    .about-snap, .solutions, .why-africa, .projects, .partnerships,
+    .story-section, .roadmap, .solutions-detail, .projects-page,
+    .sustain-page, .partnerships-page, .news-page, .contact-page { padding-top: 64px; padding-bottom: 64px; }
+    .section-header { flex-direction: column; align-items: flex-start; gap: 16px; margin-bottom: 40px; }
+    .about-pillars { padding: 24px 24px 28px; }
+    .project-card { padding: 32px 24px; }
+    .project-full-header { padding: 28px 24px; grid-template-columns: 1fr; }
+    .project-full-status { text-align: left; }
+    .project-full-title { font-size: 24px; }
+    .project-full-body { }
+    .project-full-section { padding: 24px; }
+    .partner-model { padding: 32px 24px; }
+    .news-article { padding: 28px 24px; }
+    .news-article.main .news-title { font-size: 24px; }
+    .news-grid-article { padding: 24px; }
+    .sustain-card { padding: 32px 24px; }
+    .sustain-impact { padding: 32px 24px; }
+    .impact-metric-num { font-size: 34px; }
+    .cta-section { padding: 64px 20px; }
+    .cta-title { font-size: clamp(28px, 8vw, 40px); }
+    .about-hero, .about-hero-bg-text { }
+    .about-hero { padding: 90px 20px 48px; min-height: 46vh; }
+    .about-hero-bg-text { font-size: 96px; }
+    .page-title { font-size: clamp(36px, 11vw, 56px); }
+    footer { padding: 48px 20px 24px; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; }
+    .why-card { grid-template-columns: 56px 1fr; gap: 16px; padding: 28px 0; }
+    .why-card-num { font-size: 34px; }
+    .timeline { padding-left: 40px; }
+    .timeline-dot { left: -48px; }
+    .solution-detail-num { font-size: 52px; }
+    .solution-detail-name { font-size: 22px; }
+    .story-block-title { font-size: 22px; }
+    .contact-info-title { font-size: 28px; }
+    .form-title { font-size: 19px; }
+  }
+
+  /* ============================================================
+     ===== ADDED: 480px and below — small phones =====
+  ============================================================ */
+  @media (max-width: 480px) {
+    nav { padding: 16px 20px; }
+    nav.scrolled { padding: 12px 20px; }
+    .logo-text { font-size: 14px; }
+    .logo-text span { font-size: 8px; }
+    .logo-mark { width: 30px; height: 30px; }
+    .nav-cta { padding: 9px 16px; font-size: 11px; }
+
+    .hero { padding: 0 20px 44px; }
+    .hero-eyebrow-text { font-size: 10px; }
+    .hero-headline { font-size: clamp(30px, 10vw, 38px); margin-bottom: 20px; }
+    .hero-sub { font-size: 14px; margin-bottom: 28px; }
+    .btn-primary, .btn-secondary { padding: 14px 24px; font-size: 12px; width: 100%; justify-content: center; }
+    .hero-actions { width: 100%; }
+
+    .stats-strip { grid-template-columns: 1fr 1fr; padding: 20px 16px; }
+    .stat-item { padding: 0 8px 12px; border-right: none; border-bottom: 1px solid var(--border); }
+    .stat-item:nth-child(2n) { border-right: none; }
+    .stat-item:nth-last-child(-n+2) { border-bottom: none; padding-bottom: 0; }
+    .stat-number { font-size: 24px; }
+    .stat-label { font-size: 10px; }
+
+    .section-inner { padding: 0 16px; }
+    .section-title { font-size: clamp(26px, 8vw, 34px); }
+
+    .about-pillars { padding: 20px 18px 24px; }
+    .pillar-title { font-size: 13px; }
+    .pillar-text { font-size: 12px; }
+
+    .solution-card { padding: 28px 20px; }
+    .sol-title { font-size: 17px; }
+
+    .why-title { font-size: clamp(28px, 10vw, 36px); }
+    .why-card { grid-template-columns: 1fr; gap: 8px; }
+    .why-card-num { font-size: 28px; }
+
+    .project-card { padding: 24px 20px; }
+    .project-card.featured .project-title { font-size: 24px; }
+    .project-title { font-size: 19px; }
+    .project-metrics { gap: 20px; }
+
+    .partner-types { grid-template-columns: 1fr 1fr; }
+    .partner-type { padding: 22px 14px; }
+
+    .cta-title { font-size: clamp(24px, 9vw, 32px); }
+    .cta-sub { font-size: 15px; }
+    .cta-actions { flex-direction: column; width: 100%; }
+    .cta-actions .btn-primary, .cta-actions .btn-secondary { width: 100%; }
+
+    .about-hero-bg-text { font-size: 64px; bottom: -8px; }
+    .page-title { font-size: clamp(30px, 12vw, 44px); }
+
+    .story-block-title { font-size: 20px; }
+    .story-block-text { font-size: 14px; }
+    .values-grid { grid-template-columns: 1fr; }
+    .value-item { padding: 22px; }
+
+    .timeline { padding-left: 32px; }
+    .timeline-dot { left: -40px; width: 12px; height: 12px; }
+    .timeline-title { font-size: 17px; }
+
+    .solution-detail-item { padding: 48px 0; }
+    .solution-tags { gap: 6px; }
+    .solution-tag { font-size: 10px; padding: 4px 10px; }
+    .detail-tabs { gap: 4px; }
+    .detail-tab { padding: 10px 12px; font-size: 11px; }
+
+    .project-full-title { font-size: 21px; }
+    .project-full-meta { gap: 12px; }
+    .project-kpi-item { flex-direction: column; align-items: flex-start; gap: 2px; border-bottom: none; padding-bottom: 6px; }
+    .project-full-image { height: 200px; }
+    .sustain-photo-banner { height: 180px; margin-bottom: 40px; }
+
+    .sustain-impact-title { font-size: 24px; }
+    .impact-metrics { grid-template-columns: 1fr 1fr; gap: 24px 16px; }
+    .impact-metric-num { font-size: 28px; }
+
+    .partner-model-name { font-size: 20px; }
+    .partner-model-desc { font-size: 13px; }
+
+    .news-cats { gap: 6px; }
+    .news-cat { padding: 7px 14px; font-size: 11px; }
+    .news-title { font-size: 19px; }
+    .news-article.main .news-title { font-size: 21px; }
+    .news-article { padding: 22px 18px; }
+    .news-grid-article { padding: 20px 18px; }
+
+    .contact-info-title { font-size: 24px; }
+    .contact-detail { gap: 12px; }
+    .form-row { gap: 12px; }
+
+    .footer-top { gap: 32px; }
+    .footer-col-title { font-size: 11px; }
+    .footer-legal { gap: 16px; }
+
+    .about-visual-photo { height: 200px; }
+    .why-photo { height: 180px; }
+  }
+
+  /* ============================================================
+     ===== ADDED: sub-400px devices (390 / 375 / 360 / 320) =====
+  ============================================================ */
+  @media (max-width: 400px) {
+    .hero-headline { font-size: clamp(27px, 10vw, 34px); }
+    .section-inner { padding: 0 14px; }
+    .stats-strip { padding: 18px 14px; grid-template-columns: 1fr 1fr; }
+    .stat-number { font-size: 21px; }
+    .about-hero-bg-text { display: none; }
+    .partner-types { grid-template-columns: 1fr 1fr; }
+    .partner-type-text { font-size: 11px; }
+    .impact-metrics { grid-template-columns: 1fr 1fr; }
+    .news-cats { justify-content: flex-start; }
+    .project-full-header { padding: 20px 16px; }
+    .project-full-section { padding: 18px 16px; }
+    .sustain-card, .partner-model, .news-article, .news-grid-article { padding: 20px 16px; }
+  }
+
+  @media (max-width: 340px) {
+    .hero-headline { font-size: clamp(25px, 10vw, 30px); }
+    .stats-strip { grid-template-columns: 1fr 1fr; }
+    .impact-metrics { grid-template-columns: 1fr 1fr; }
+    .partner-types { grid-template-columns: 1fr; }
+    .partner-type { padding: 18px 14px; }
+  }
+
+  /* ============================================================
+     ===== ADDED: Large desktop / wide monitor refinement =====
+     Keeps content from stretching awkwardly on ultra-wide screens
+     without altering the existing max-width: 1320px containers.
+  ============================================================ */
+  @media (min-width: 1600px) {
+    .hero-content { max-width: 900px; }
+  }
 </style>
 </head>
 <body>
@@ -2067,7 +2316,7 @@
     <!-- Real photo background layer (aerial solar bus depot) -->
     <!-- INSERT IMAGE PATH: WhatsApp_Image_2026-06-04_at_2_16_22_PM__3_.jpeg -->
     <div class="hero-photo-bg">
-      <img src="images/WhatsApp Image 2026-06-04 at 2.16.22 PM (3).jpeg" alt="Solar-powered EV charging depot aerial view">
+      <img src="images/WhatsApp Image 2026-06-04 at 2.16.22 PM (3).jpeg" alt="Solar-powered EV charging depot aerial view">
     </div>
     <div class="hero-photo-overlay"></div>
 
@@ -2119,10 +2368,10 @@
     </div>
 
     <!-- IMAGE PLACEHOLDER 00 — secondary hero visual, floating card style -->
-    <div class="hero-image-card">
-      <img src="images/WhatsApp Image 2026-06-04 at 2.16.22 PM (3).jpeg" alt="KineticGrid Africa solar EV charging infrastructure">
+    <!-- <div class="hero-image-card">
+      <img src="images/WhatsApp Image 2026-06-04 at 2.16.22 PM (3).jpeg" alt="KineticGrid Africa solar EV charging infrastructure">
       <span class="hero-image-card-label">Lagos Charging Corridor</span>
-    </div>
+    </div> -->
 
     <div class="hero-content">
       <div class="hero-eyebrow">
@@ -2309,7 +2558,7 @@
           </a>
           <!-- Solar carport aerial view — visualising scale of clean charging infrastructure -->
           <!-- INSERT IMAGE PATH: WhatsApp_Image_2026-06-04_at_2_16_23_PM__3_.jpeg -->
-          <img src="images/WhatsApp Image 2026-06-04 at 2.16.23 PM (3).jpeg" alt="Aerial view of solar-powered EV charging carport" class="why-photo">
+          <img src="images/WhatsApp Image 2026-06-04 at 2.16.23 PM (2).jpeg" alt="Aerial view of solar-powered EV charging carport" class="why-photo">
         </div>
         <div class="why-cards">
           <div class="why-card">
@@ -2362,7 +2611,7 @@
         </a>
       </div>
       <!-- IMAGE PLACEHOLDER 02 -->
-      <img src="images/chris-liverani-HUJDz6CJEaM-unsplash.jpg" alt="Infrastructure programs in development" class="img-placeholder img-placeholder-banner">
+      <img src="images/precious-madubuike-N2Td7KpIvYc-unsplash.jpg" alt="Infrastructure programs in development" class="img-placeholder img-placeholder-banner">
       <div class="projects-grid">
         <div class="project-card featured reveal">
           <div class="project-tag">
@@ -2448,7 +2697,7 @@
         </a>
       </div>
       <!-- IMAGE PLACEHOLDER 03 -->
-      <img src="images/placeholder-03-partnership-ecosystem.jpg" alt="Strategic partnership ecosystem" class="img-placeholder img-placeholder-card">
+      <img src="images/partnerss.jpg" alt="Strategic partnership ecosystem" class="img-placeholder img-placeholder-card">
       <div class="partner-types">
         <div class="partner-type">
           <div class="partner-type-icon">
@@ -2690,7 +2939,7 @@
             <span class="solution-tag">Urban Networks</span>
           </div>
           <!-- IMAGE PLACEHOLDER 06 -->
-          <img src="images/placeholder-06-infrastructure-site.jpg" alt="EV infrastructure development site" class="img-placeholder img-placeholder-side">
+          <img src="images/Bus ev.jpeg" alt="EV infrastructure development site" class="img-placeholder img-placeholder-side">
         </div>
         <div class="solution-detail-right">
           <div class="detail-tabs">
@@ -2785,7 +3034,7 @@
             <span class="solution-tag">Off-Grid</span>
           </div>
           <!-- IMAGE PLACEHOLDER 07 -->
-          <img src="images/placeholder-07-renewable-energy.jpg" alt="Solar renewable energy integration for EV charging" class="img-placeholder img-placeholder-side">
+          <img src="images/WhatsApp Image 2026-06-04 at 2.16.23 PM (3).jpeg" alt="Solar renewable energy integration for EV charging" class="img-placeholder img-placeholder-side">
         </div>
         <div class="solution-detail-right">
           <div class="detail-tabs">
@@ -2913,7 +3162,7 @@
         </div>
         <!-- Bus charging station image — illustrates the scale of planned infrastructure -->
         <!-- INSERT IMAGE PATH: WhatsApp_Image_2026-06-04_at_2_16_22_PM__5_.jpeg -->
-        <img src="images/WhatsApp Image 2026-06-04 at 2.16.22 PM (5).jpeg" alt="EV charging stations with solar canopy infrastructure" class="project-full-image">
+        <img src="images/plugged-chargers-into-two-electric-cars-charge-station.jpg" alt="EV charging stations with solar canopy infrastructure" class="project-full-image">
         <div class="project-full-body">
           <div class="project-full-section">
             <div class="project-section-label">Key Metrics</div>
@@ -2983,7 +3232,7 @@
           </div>
         </div>
         <!-- IMAGE PLACEHOLDER 08 -->
-        <img src="images/placeholder-08-abuja-hub-rendering.jpg" alt="Abuja Smart Mobility Hub concept rendering" class="img-placeholder img-placeholder-banner" style="margin-bottom:0;border-bottom:1px solid var(--border-dim);">
+        <img src="images/EV PACK.jpeg" alt="Abuja Smart Mobility Hub concept rendering" class="img-placeholder img-placeholder-banner" style="margin-bottom:0;border-bottom:1px solid var(--border-dim);">
         <div class="project-full-body">
           <div class="project-full-section">
             <div class="project-section-label">Key Metrics</div>
@@ -3051,7 +3300,7 @@
           </div>
         </div>
         <!-- IMAGE PLACEHOLDER 09 -->
-        <img src="images/placeholder-09-east-africa-corridor.jpg" alt="East Africa Solar Charging Network corridor" class="img-placeholder img-placeholder-banner" style="margin-bottom:0;border-bottom:1px solid var(--border-dim);">
+        <img src="images/EV INF.jpeg" alt="East Africa Solar Charging Network corridor" class="img-placeholder img-placeholder-banner" style="margin-bottom:0;border-bottom:1px solid var(--border-dim);">
         <div class="project-full-body">
           <div class="project-full-section">
             <div class="project-section-label">Key Metrics</div>
@@ -3116,7 +3365,7 @@
     <div class="section-inner">
       <!-- Interior solar panel canopy image — the engineering reality behind clean charging -->
       <!-- INSERT IMAGE PATH: WhatsApp_Image_2026-06-04_at_2_16_23_PM__2_.jpeg -->
-      <img src="images/WhatsApp Image 2026-06-04 at 2.16.23 PM (2).jpeg" alt="Interior view of solar panel canopy above EV charging bays" class="sustain-photo-banner">
+      <img src="images/solar panels .jpeg" alt="Interior view of solar panel canopy above EV charging bays" class="sustain-photo-banner">
 
       <div class="sustain-grid">
         <div class="sustain-card green reveal">
@@ -3166,7 +3415,7 @@
       <div class="sustain-impact reveal">
         <div class="sustain-impact-title">2030 Impact Targets</div>
         <!-- IMAGE PLACEHOLDER 10 -->
-        <img src="images/placeholder-10-impact-visualization.jpg" alt="Sustainability impact visualization" class="img-placeholder img-placeholder-card" style="border-color:var(--border);">
+        <img src="images/retinal-biometrics-technology-with-man-s-eye-digital-remix.jpg" alt="Sustainability impact visualization" class="img-placeholder img-placeholder-card" style="border-color:var(--border);">
         <div class="impact-metrics">
           <div class="impact-metric">
             <div class="impact-metric-num">5M</div>
@@ -3218,7 +3467,7 @@
       <p style="font-size:18px;line-height:1.75;color:var(--sage);max-width:680px;margin-bottom:64px;" class="reveal">KineticGrid Africa is a partnership-first organization. Our business model is designed around deep, long-term strategic alliances with the institutions, governments, and investors who share our vision for Africa's clean energy future.</p>
 
       <!-- IMAGE PLACEHOLDER 11 -->
-      <img src="images/placeholder-11-partnership-collaboration.jpg" alt="KineticGrid Africa strategic partnership collaboration" class="img-placeholder img-placeholder-banner">
+      <img src="images/partnerss.jpg" alt="KineticGrid Africa strategic partnership collaboration" class="img-placeholder img-placeholder-banner">
 
       <div class="partner-model-grid">
         <div class="partner-model reveal">
@@ -3466,7 +3715,7 @@
               </div>
               <div>
                 <div class="contact-detail-label">Email</div>
-                <div class="contact-detail-val">kineticgridafrica@gmail.com</div>
+                <div class="contact-detail-val">info@KineticGridAfrica.Com</div>
               </div>
             </div>
             <div class="contact-detail">
@@ -3475,7 +3724,7 @@
               </div>
               <div>
                 <div class="contact-detail-label">Phone</div>
-                <div class="contact-detail-val">+234 813 158 5019</div>
+                <div class="contact-detail-val">+234 703 119 2535</div>
               </div>
             </div>
             <div class="contact-detail">
@@ -3484,7 +3733,7 @@
               </div>
               <div>
                 <div class="contact-detail-label">Headquarters</div>
-                <div class="contact-detail-val">Lagos & Abuja, Nigeria<br>West Africa</div>
+                <div class="contact-detail-val">Abuja, Nigeria<br>West Africa</div>
               </div>
             </div>
           </div>
@@ -3493,7 +3742,7 @@
             <div class="map-label">Nigeria, West Africa</div>
           </div>
           <!-- IMAGE PLACEHOLDER 12 -->
-          <img src="images/placeholder-12-hq-team.jpg" alt="KineticGrid Africa headquarters and team" class="img-placeholder img-placeholder-side">
+          <!-- <img src="images/placeholder-12-hq-team.jpg" alt="KineticGrid Africa headquarters and team" class="img-placeholder img-placeholder-side"> -->
         </div>
 
         <div class="contact-form reveal reveal-delay-2">
